@@ -2,8 +2,20 @@ import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 import BookDetailHeader from '../components/BookDetail/BookDetailHead'
 import styled from '@emotion/native'
 import BookDetailComment from '../components/BookDetail/BookDetailComment'
+import BookReviewModal from '../components/BookDetail/BookReviewModal'
+import { useState } from 'react'
 
 const BookDetail = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const openDetailModalHandler = () => {
+    setIsOpenModal(true)
+  }
+
+  const closeDetailModalHandler = () => {
+    setIsOpenModal(false)
+  }
+
   return (
     <BookDetailWrap>
       <BookDetailHeader />
@@ -24,7 +36,7 @@ const BookDetail = () => {
         <BookDetailComment />
       </BookDetailCommentContainer>
       <BookDetailCommentBtnContainer>
-        <BookDetailReviewBtn>
+        <BookDetailReviewBtn onPress={openDetailModalHandler}>
           <Ionicons name="water" size={30} color="#36A992" />
           <BookDetailReviewText>리뷰등록</BookDetailReviewText>
         </BookDetailReviewBtn>
@@ -37,6 +49,10 @@ const BookDetail = () => {
           <BookDetailBookMarkText>찜</BookDetailBookMarkText>
         </BookDetailBookMarkBtn>
       </BookDetailCommentBtnContainer>
+      <BookReviewModal
+        isOpenModal={isOpenModal}
+        onCloseDetailModal={closeDetailModalHandler}
+      />
     </BookDetailWrap>
   )
 }
