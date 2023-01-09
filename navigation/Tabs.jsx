@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Home from '../screen/Home'
+import styled from '@emotion/native'
 import Mypage from '../screen/Mypage'
+import Home from '../screen/Home'
 import { MaterialIcons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 
@@ -43,3 +44,7 @@ const Tabs = () => {
 }
 
 export default Tabs
+
+const LogoImage = styled.Image`
+  width: 20px;
+`
