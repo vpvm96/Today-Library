@@ -1,14 +1,17 @@
 import { useState } from 'react'
+import { View } from 'react-native'
 import { Rating } from 'react-native-ratings'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 import BookDetailHeader from '../components/BookDetail/BookDetailHead'
 import BookDetailComment from '../components/BookDetail/BookDetailComment'
 import BookReviewModal from '../components/BookDetail/BookReviewModal'
+import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
-import { View } from 'react-native'
 
 const BookDetail = () => {
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [reviewValue, reviewValueChangeHandler, createReviewClickHandler] =
+    useInput('')
   const [isRating, setIsRating] = useState(0)
 
   const testData = [
@@ -40,6 +43,20 @@ const BookDetail = () => {
       createdAt: '2023.01.09',
       rating: 2,
     },
+    {
+      id: 5,
+      nickname: '악플러라러',
+      content: '전 생각보단 별로인거 같네요.',
+      createdAt: '2023.01.09',
+      rating: 2,
+    },
+    {
+      id: 6,
+      nickname: '악플러러',
+      content: '전 생각보단 별로인거 같네요.',
+      createdAt: '2023.01.09',
+      rating: 2,
+    },
   ]
 
   const openDetailModalHandler = () => {
@@ -52,6 +69,11 @@ const BookDetail = () => {
 
   const getRatingDetailModalHandler = (rating) => {
     setIsRating(rating)
+  }
+
+  const createDetailReviewHandler = () => {
+    createReviewClickHandler(isRating)
+    setIsOpenModal(false)
   }
 
   return (
@@ -92,8 +114,11 @@ const BookDetail = () => {
       </BookDetailCommentBtnContainer>
       <BookReviewModal
         isOpenModal={isOpenModal}
+        reviewValue={reviewValue}
+        onReviewValueChange={reviewValueChangeHandler}
         onCloseDetailModal={closeDetailModalHandler}
         onGetRatingDetailModal={getRatingDetailModalHandler}
+        onCreateDetailReview={createDetailReviewHandler}
       />
     </BookDetailWrap>
   )

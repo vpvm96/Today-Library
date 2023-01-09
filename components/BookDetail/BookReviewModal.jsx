@@ -4,7 +4,10 @@ import styled from '@emotion/native'
 
 const BookReviewModal = ({
   isOpenModal,
+  reviewValue,
   onCloseDetailModal,
+  onReviewValueChange,
+  onCreateDetailReview,
   onGetRatingDetailModal,
 }) => {
   return (
@@ -42,10 +45,12 @@ const BookReviewModal = ({
               numberOfLines={5}
               placeholder="내용을 입력해 주세요"
               textAlignVertical="top"
+              value={reviewValue}
+              onChangeText={onReviewValueChange}
             />
           </ModalInputBox>
           <ModalButtonBox>
-            <ModalSaveButton>
+            <ModalSaveButton onPress={onCreateDetailReview}>
               <ModalSaveButtonText>저장</ModalSaveButtonText>
             </ModalSaveButton>
             <ModalCancelButton onPress={onCloseDetailModal}>
