@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { QueryClient, QueryClientProvider } from 'react-query'
-
 import { ThemeProvider } from '@emotion/react'
 import { lightTheme } from './assets/styles/theme'
 import Root from './navigation/Root'
