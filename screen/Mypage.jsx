@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import styled from '@emotion/native'
 
-function Mypage() {
+const Mypage = () => {
   return (
     <ScrollView>
       {/* 프로필 영역 */}
@@ -93,6 +93,7 @@ function Mypage() {
 
 export default Mypage
 
+// 프로필 영역
 const MyInfo = styled.View`
   width: 100%;
   height: 200px;
@@ -149,6 +150,7 @@ const MyIntroduce = styled.Text`
   margin-top: 10px;
 `
 
+// 읽음 & 찜 책 리스트
 const MyRecords = styled.View`
   /* flex: 3; */
   height: 100%;
