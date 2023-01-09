@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import styled from '@emotion/native'
 import Mypage from '../screen/Mypage'
+import Home from '../screen/Home'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { Image, TouchableOpacity, View, Text } from 'react-native'
