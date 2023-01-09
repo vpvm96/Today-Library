@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import styled from '@emotion/native'
 
-function Mypage() {
+const Mypage = () => {
   return (
     <ScrollView>
       {/* 프로필 영역 */}
