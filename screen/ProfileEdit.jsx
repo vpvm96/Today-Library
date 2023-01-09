@@ -100,7 +100,7 @@ const IntroduceInput = styled.TextInput`
   width: 70%;
   height: 30%;
   background-color: white;
-  border-radius: 10%;
+  border-radius: 10px;
   border: 1px solid grey;
   font-size: 18px;
 `
@@ -117,7 +117,7 @@ const SaveButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
   background-color: #61d2bc;
-  border-radius: 5%;
+  border-radius: 5px;
   justify-content: center;
   align-items: center;
   margin-right: 10px;
@@ -131,7 +131,7 @@ const CancelButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
   background-color: lightgray;
-  border-radius: 5%;
+  border-radius: 5px;
   justify-content: center;
   align-items: center;
 `
