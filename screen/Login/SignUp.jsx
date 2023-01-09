@@ -1,4 +1,3 @@
-// import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react'
 import {
   getAuth,
@@ -8,25 +7,35 @@ import {
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
-// import { Alert } from 'react-native';
-
 import { emailRegex, pwRegex } from '../../utils'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function SignUp() {
   const emailRef = useRef(null)
   const pwRef = useRef(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [secureText, setSecureText] = useState(null)
+  const [touchEye, setTouchEye] = useState(true)
   const [warningText, setWarningText] = useState('')
   const navigation = useNavigation()
 
   const auth = getAuth()
 
+  const TouchEyeBtn = () => {
+    setTouchEye((prev) => !prev)
+    if (touchEye === false) {
+      setSecureText(false)
+    } else {
+      setSecureText(true)
+    }
+  }
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       console.log('onAuthStateChanged user', user)
       if (user) {
-        navigation.replace('')
+        navigation.replace('Main')
       }
     })
   }, [])
@@ -94,15 +103,24 @@ export default function SignUp() {
         ref={emailRef}
         textContentType="emailAddress"
       />
-      <SignUpTextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        ref={pwRef}
-        textContentType="password"
-        returnKeyType="send"
-        secureTextEntry
-      />
+      <PasswordBody>
+        <LoginPasswordInput
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          ref={pwRef}
+          returnKeyType="send"
+          textContentType="password"
+          secureTextEntry={secureText ? true : false}
+        />
+        <TouchIcon onPress={TouchEyeBtn}>
+          {touchEye ? (
+            <Ionicons name="eye" size={24} color="black" />
+          ) : (
+            <Ionicons name="eye-off" size={24} color="black" />
+          )}
+        </TouchIcon>
+      </PasswordBody>
       {/* <SignUpTextInput
         placeholder='PasswordConfirm'
         value={password}
@@ -141,6 +159,7 @@ const SignUpImage = styled.Image`
 const SignUpTextInput = styled.TextInput`
   width: 70%;
   height: 20%;
+  padding: 10px;
 
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
@@ -150,6 +169,21 @@ const SignUpTextInput = styled.TextInput`
 
   margin-bottom: 5%;
 `
+const PasswordBody = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 70%;
+  height: 20%;
+  padding: 10px;
+
+  border-radius: 10px;
+  background-color: rgb(247, 244, 244);
+`
+const LoginPasswordInput = styled.TextInput``
+const TouchIcon = styled.TouchableOpacity``
 // const SignUpNicknameTextInput = styled.TextInput`
 //   width: 70%;
 //   height: 20%;

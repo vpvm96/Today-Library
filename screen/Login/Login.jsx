@@ -1,11 +1,3 @@
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   getAuth,
@@ -16,14 +8,26 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Login() {
   const emailRef = useRef(null)
   const pwRef = useRef(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [secureText, setSecureText] = useState(null)
+  const [touchEye, setTouchEye] = useState(true)
   const [warningText, setWarningText] = useState('')
   const navigation = useNavigation()
+
+  const TouchEyeBtn = () => {
+    setTouchEye((prev) => !prev)
+    if (touchEye === false) {
+      setSecureText(false)
+    } else {
+      setSecureText(true)
+    }
+  }
 
   const auth = getAuth()
 
@@ -105,15 +109,24 @@ export default function Login() {
         ref={emailRef}
         textContentType="emailAddress"
       />
-      <LoginTextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        ref={pwRef}
-        returnKeyType="send"
-        textContentType="password"
-        secureTextEntry
-      />
+      <PasswordBody>
+        <LoginPasswordInput
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          ref={pwRef}
+          returnKeyType="send"
+          textContentType="password"
+          secureTextEntry={secureText ? true : false}
+        />
+        <TouchIcon onPress={TouchEyeBtn}>
+          {touchEye ? (
+            <Ionicons name="eye" size={24} color="black" />
+          ) : (
+            <Ionicons name="eye-off" size={24} color="black" />
+          )}
+        </TouchIcon>
+      </PasswordBody>
       <WarnigText>{warningText}</WarnigText>
       <LoginBtn onPress={LogginBtnHandle}>
         <LogginBtnText>Login</LogginBtnText>
@@ -140,6 +153,7 @@ const LogoImage = styled.Image`
 const LoginTextInput = styled.TextInput`
   width: 70%;
   height: 20%;
+  padding: 10px;
 
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
@@ -149,6 +163,22 @@ const LoginTextInput = styled.TextInput`
 
   margin-bottom: 5%;
 `
+
+const PasswordBody = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 70%;
+  height: 20%;
+  padding: 10px;
+
+  border-radius: 10px;
+  background-color: rgb(247, 244, 244);
+`
+const LoginPasswordInput = styled.TextInput``
+const TouchIcon = styled.TouchableOpacity``
 const WarnigText = styled.Text`
   color: red;
 `
