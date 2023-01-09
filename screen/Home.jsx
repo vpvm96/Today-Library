@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Alert,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from 'react-native'
+import { Alert, View, Text, TouchableOpacity, FlatList } from 'react-native'
 import styled from '@emotion/native'
 import { Feather } from '@expo/vector-icons'
-import { BookItem } from '../components/BookItem'
+import NewBookItem from '../components/MainBookItems/NewBookItem'
+import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
 
 //예비용 데이터
 const obj = [
   {
     id: '1',
-    title: 'First Item',
+    title: '제목1',
+    writer: '저자1',
+    publisher: '출판1',
+    year: 2005,
   },
   {
     id: '2',
-    title: 'Second Item',
+    title: '제목2',
+    writer: '저자2',
+    publisher: '출판2',
+    year: 2002,
   },
   {
     id: '3',
-    title: 'Third Item',
+    title: '제목3',
+    writer: '저자3',
+    publisher: '출판3',
+    year: 2003,
   },
 ]
 
 const Home = () => {
+  // const [data, setData] = useState([obj])
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
 
@@ -69,12 +73,19 @@ const Home = () => {
       </StyleCategoryWrap>
 
       {/* flatlist 영역 */}
-      {/* 맵돌릴 필요없이 category if 문 줘서 출력해보기 */}
-      {/* <FlatList
-        keyExtractor={(item) => item.id}
-        data={obj}
-        renderItem={({ item }) => <BookItem bookitem={item} />}
-      /> */}
+      {category === 'newbook' ? (
+        <FlatList
+          data={obj}
+          renderItem={({ item }) => <NewBookItem item={item} />}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <FlatList
+          data={obj}
+          renderItem={({ item }) => <RecommendBookItem item={item} />}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </>
   )
 }
@@ -134,6 +145,6 @@ const StyleCategoryText = styled.Text`
   font-weight: 700;
 `
 
-// flatlist
+// flatlist 영역
 
 export default Home

@@ -47,7 +47,6 @@ const Tabs = () => {
         name="Mypage"
         component={Mypage}
       />
-
       <Tab.Screen
         options={{
           tabBarIcon: ({ color }) => (
