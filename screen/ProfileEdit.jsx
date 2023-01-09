@@ -100,7 +100,7 @@ const IntroduceInput = styled.TextInput`
   width: 70%;
   height: 30%;
   background-color: white;
-  /* border-radius: 10; */
+  border-radius: 10px;
   border: 1px solid grey;
   font-size: 18px;
 `
