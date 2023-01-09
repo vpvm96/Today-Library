@@ -1,17 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import styled from '@emotion/native'
 import Mypage from '../screen/Mypage'
-import Home from '../screen/Home'
-<<<<<<< HEAD
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
-// import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'
 import { Image, TouchableOpacity, View, Text } from 'react-native'
 import ProfileEdit from '../screen/ProfileEdit'
-=======
-import { MaterialIcons } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'
->>>>>>> d966b955498e7466aa78b1df440ee74d8ba6584c
 
 const Tab = createBottomTabNavigator()
 
@@ -52,7 +45,6 @@ const Tabs = () => {
         name="Mypage"
         component={Mypage}
       />
-<<<<<<< HEAD
       <Tab.Screen
         options={{
           tabBarIcon: ({ color }) => (
@@ -62,8 +54,6 @@ const Tabs = () => {
         name="ProfileEdit"
         component={ProfileEdit}
       />
-=======
->>>>>>> d966b955498e7466aa78b1df440ee74d8ba6584c
     </Tab.Navigator>
   )
 }
