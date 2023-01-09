@@ -6,7 +6,11 @@ const Nav = createNativeStackNavigator()
 
 const Root = () => {
   return (
-    <Nav.Navigator screenOptions={{ headerShown: false }}>
+    <Nav.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Nav.Screen name="Tabs" component={Tabs} />
       <Nav.Screen name="Stacks" component={Stacks} />
     </Nav.Navigator>
