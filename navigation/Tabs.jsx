@@ -38,7 +38,7 @@ const Tabs = () => {
             <FontAwesome name="user" size={32} color={color} />
           ),
           headerRight: () => (
-            <SettingIcon onPress={() => navigate('ProfileEdit')}>
+            <SettingIcon>
               <Ionicons name="ios-settings-sharp" size={20} color="black" />
             </SettingIcon>
           ),
