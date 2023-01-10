@@ -72,7 +72,6 @@ const IconContainer = styled.View`
 `
 
 const NiNameInputContainer = styled.View`
-  /* border: 1px solid grey; */
   border-bottom-width: 1px;
   border-color: grey;
   width: 40%;
