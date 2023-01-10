@@ -27,15 +27,6 @@ const ProfileEdit = () => {
   const auth = getAuth()
   const currentUser = auth.currentUser
 
-  // const onChangeMessageHandler = (event) => {
-  //   const { value } => event.target;
-  //   setMessage(value)
-  // }
-
-  // console.log(currentUser)
-
-  // const getProfileRequest = ()
-
   // 디바이스에서 이미지 선택 기능
   const onChangeImageHandler = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,12 +36,9 @@ const ProfileEdit = () => {
       quality: 1,
     })
 
-    console.log(result.assets)
-    // setprofileImg(result.assets)
-    // 이미지 선택 취소가 아닐 경우, 선택 이미지 세팅
+    // console.log(result.assets)
+
     if (result.assets !== null) {
-      // onChangePhoto(result.assets)
-      // setprofileImg(result.url)
       setProfileImg(result.assets)
     } else {
       setProfileImg(require('../assets/images/profileImg.png'))
@@ -67,43 +55,23 @@ const ProfileEdit = () => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
         userInfo.push({
-          // id: doc.data().id,
-          // uid: doc.data().uid,
-          // email: doc.data().email,
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
         })
-        // console.log(userInfo[0].nickname)
         setNickName(userInfo[0].nickname)
         setSaveId(userInfo[0].id)
         setMessage(userInfo[0].mymessage)
-        // console.log(userInfo[0].mymessage)
       })
     })
   }
 
+  // 프로필 변경 내용 FB 저장
   const onSaveProfileHandler = async (id) => {
-    // const q = query(
-    //   collection(fireStore, 'users'),
-    //   where('uid', '==', currentUser.uid)
-    // )
-    // await updateDoc(doc(fireStore, 'users', id), {
-    //   nickname: nickName,
-    //   mymessage: message,
-    // })
-
-    // const docRef = doc(fireStore, 'users', id)
-    // console.log(q)
-    // console.log(docRef)
     try {
       await updateDoc(doc(fireStore, 'users', id), {
         nickname: nickName,
         mymessage: message,
       })
-      // await updateDoc(q, {
-      //   nickname: nickName,
-      //   mymessage: message,
-      // })
     } catch (err) {
       console.log(err)
     } finally {
