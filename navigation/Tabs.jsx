@@ -48,16 +48,6 @@ const Tabs = ({ navigation }) => {
         name="Mypage"
         component={Mypage}
       />
-
-      {/* <Tab.Screen
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-settings-sharp" size={20} color={color} />
-          ),
-        }}
-        name="ProfileEdit"
-        component={ProfileEdit}
-      /> */}
     </Tab.Navigator>
   )
 }

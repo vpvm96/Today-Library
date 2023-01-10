@@ -1,13 +1,43 @@
-import { Modal } from 'react-native'
+import { Platform, Modal } from 'react-native'
+import { Rating } from 'react-native-ratings'
 import styled from '@emotion/native'
 
-const BookReviewModal = ({ isOpenModal, onCloseDetailModal }) => {
+const BookReviewModal = ({
+  isOpenModal,
+  reviewValue,
+  onCloseDetailModal,
+  onReviewValueChange,
+  onCreateDetailReview,
+  onGetRatingDetailModal,
+}) => {
   return (
-    <Modal visible={isOpenModal} transparent animationType="slide">
+    <Modal visible={isOpenModal} transparent animationType="fade">
       <ModalBackDrop>
-        <ModalDialog>
-          <ModalBookTitle>책 제목</ModalBookTitle>
-          <ModalRatingText>별점 ⭐️⭐️⭐️⭐️⭐️</ModalRatingText>
+        <ModalDialog
+          style={{
+            ...Platform.select({
+              ios: {
+                shadowColor: 'rgb(50,50,50)',
+                shadowOpacity: 0.5,
+                shadowRadius: 5,
+                shadowOffset: {
+                  height: -1,
+                  width: 0,
+                },
+              },
+            }),
+          }}
+        >
+          <ModalRatingBox>
+            <ModalBookTitle>책 제목</ModalBookTitle>
+            <Rating
+              style={{ marginTop: 13 }}
+              startingValue={0}
+              ratingCount={5}
+              imageSize={30}
+              onFinishRating={onGetRatingDetailModal}
+            />
+          </ModalRatingBox>
           <ModalInputBox>
             <ModalInputText>나의 감상</ModalInputText>
             <ModalInput
@@ -15,10 +45,12 @@ const BookReviewModal = ({ isOpenModal, onCloseDetailModal }) => {
               numberOfLines={5}
               placeholder="내용을 입력해 주세요"
               textAlignVertical="top"
+              value={reviewValue}
+              onChangeText={onReviewValueChange}
             />
           </ModalInputBox>
           <ModalButtonBox>
-            <ModalSaveButton>
+            <ModalSaveButton onPress={onCreateDetailReview}>
               <ModalSaveButtonText>저장</ModalSaveButtonText>
             </ModalSaveButton>
             <ModalCancelButton onPress={onCloseDetailModal}>
@@ -35,25 +67,30 @@ const ModalBackDrop = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 100;
 `
 const ModalDialog = styled.KeyboardAvoidingView`
-  background-color: ${(props) => props.theme.modalBg};
+  background-color: white;
   width: 80%;
   height: 70%;
   padding: 20px;
   border-radius: 5px;
 `
-const ModalBookTitle = styled.Text`
-  font-size: 30px;
-  margin-top: 20px;
+const ModalRatingBox = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 10px;
 `
-const ModalRatingText = styled.Text`
+const ModalBookTitle = styled.Text`
   font-size: 30px;
   margin-top: 20px;
 `
 const ModalInputBox = styled.View`
   width: 100%;
-  margin-top: 35px;
+  margin-top: 25px;
 `
 const ModalInputText = styled.Text`
   font-size: 30px;
