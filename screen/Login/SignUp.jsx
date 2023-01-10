@@ -83,11 +83,20 @@ export default function SignUp() {
       return
     }
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then((res) => {
         Toast.show({
           type: 'success',
           text1: '회원가입 성공',
           text2: `${email}으로 가입되었습니다.`,
+        })
+        addDoc(collection(dbService, 'users'), {
+          uid: res.user.uid,
+          email: email,
+          password: password,
+          nickname: nickname,
+          bookmark: [''],
+          readBook: [''],
+          profileImg: '',
         })
         console.log('회원가입성공')
         setEmail('')
@@ -99,15 +108,6 @@ export default function SignUp() {
           setWarningText('이미 사용중인 아이디입니다.')
         }
       })
-
-    addDoc(collection(dbService, 'users'), {
-      email: email,
-      password: password,
-      nickname: nickname,
-      bookmark: [''],
-      readBook: [''],
-      profileImg: '',
-    })
   }
 
   const linkTo = useLinkTo()

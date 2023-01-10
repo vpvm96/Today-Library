@@ -4,6 +4,7 @@ import styled from '@emotion/native'
 
 const BookReviewModal = ({
   isOpenModal,
+  bookTitle,
   reviewValue,
   onCloseDetailModal,
   onReviewValueChange,
@@ -29,7 +30,7 @@ const BookReviewModal = ({
           }}
         >
           <ModalRatingBox>
-            <ModalBookTitle>책 제목</ModalBookTitle>
+            <ModalBookTitle>{bookTitle}</ModalBookTitle>
             <Rating
               style={{ marginTop: 13 }}
               startingValue={0}

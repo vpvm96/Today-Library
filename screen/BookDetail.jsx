@@ -1,69 +1,36 @@
-import { useState } from 'react'
-import { View } from 'react-native'
+import { useEffect, useState } from 'react'
 import { Rating } from 'react-native-ratings'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
+import { getReviewRequest } from '../api/bookDetailService'
 import BookDetailHeader from '../components/BookDetail/BookDetailHead'
 import BookDetailComment from '../components/BookDetail/BookDetailComment'
 import BookReviewModal from '../components/BookDetail/BookReviewModal'
 import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
+import { getAuth } from 'firebase/auth'
 
 const BookDetail = ({ route: { params: book } }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [reviewValue, reviewValueChangeHandler, createReviewClickHandler] =
-    useInput('')
+  const [reviews, setReviews] = useState([])
+  const [
+    reviewValue,
+    setReviewValue,
+    reviewValueChangeHandler,
+    createReviewClickHandler,
+  ] = useInput('')
   const [isRating, setIsRating] = useState(0)
 
-  const testData = [
-    {
-      id: 1,
-      nickname: '나플레옹',
-      content: '위로의 책 완전 재밌어요.',
-      createdAt: '2023.01.09',
-      rating: 5,
-    },
-    {
-      id: 2,
-      nickname: '이순신',
-      content: '생각보다 깊은 내용이네요.',
-      createdAt: '2023.01.09',
-      rating: 5,
-    },
-    {
-      id: 3,
-      nickname: '벙먹금',
-      content: '시간 가는줄 모르고 봤어요.',
-      createdAt: '2023.01.09',
-      rating: 4,
-    },
-    {
-      id: 4,
-      nickname: '악플러',
-      content: '전 생각보단 별로인거 같네요.',
-      createdAt: '2023.01.09',
-      rating: 2,
-    },
-    {
-      id: 5,
-      nickname: '악플러라러',
-      content: '전 생각보단 별로인거 같네요.',
-      createdAt: '2023.01.09',
-      rating: 2,
-    },
-    {
-      id: 6,
-      nickname: '악플러러',
-      content: '전 생각보단 별로인거 같네요.',
-      createdAt: '2023.01.09',
-      rating: 2,
-    },
-  ]
+  useEffect(() => {
+    getReviewRequest(setReviews, book.id)
+  }, [])
 
   const openDetailModalHandler = () => {
     setIsOpenModal(true)
   }
 
   const closeDetailModalHandler = () => {
+    setIsRating(0)
+    setReviewValue('')
     setIsOpenModal(false)
   }
 
@@ -72,7 +39,7 @@ const BookDetail = ({ route: { params: book } }) => {
   }
 
   const createDetailReviewHandler = () => {
-    createReviewClickHandler(isRating)
+    createReviewClickHandler(isRating, book.id)
     setIsOpenModal(false)
   }
 
@@ -91,13 +58,11 @@ const BookDetail = ({ route: { params: book } }) => {
           </BookDetailReadButtonBox>
         </BookDetailBodyRatingContainer>
       </BookDetailBodyWrap>
-      <BookDetailCommentContainer
-        showsVerticalScrollIndicator={false}
-        data={testData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <BookDetailComment review={item} />}
-        ItemSeparatorComponent={<View style={{ height: 10 }} />}
-      />
+      <BookDetailCommentContainer>
+        {reviews.map((review) => (
+          <BookDetailComment key={review.id} review={review} />
+        ))}
+      </BookDetailCommentContainer>
       <BookDetailCommentBtnContainer>
         <BookDetailReviewBtn onPress={openDetailModalHandler}>
           <Ionicons name="water" size={30} color="#36A992" />
@@ -114,6 +79,7 @@ const BookDetail = ({ route: { params: book } }) => {
       </BookDetailCommentBtnContainer>
       <BookReviewModal
         isOpenModal={isOpenModal}
+        bookTitle={book.title}
         reviewValue={reviewValue}
         onReviewValueChange={reviewValueChangeHandler}
         onCloseDetailModal={closeDetailModalHandler}
@@ -162,7 +128,7 @@ const BookDetailReadText = styled.Text`
   font-size: 17px;
   margin-left: 5px;
 `
-const BookDetailCommentContainer = styled.FlatList`
+const BookDetailCommentContainer = styled.ScrollView`
   width: 80%;
   height: 250px;
   margin: 0 auto;

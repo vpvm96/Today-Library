@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 
 const BookDetailComment = ({ review }) => {
-  const { nickname, content, rating } = review
+  const { nickname, content } = review
   return (
     <DetailCommentWrap>
       <DetailCommentBox>
