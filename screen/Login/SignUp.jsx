@@ -9,8 +9,7 @@ import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
-import { addDoc, collection, getFirestore, updateDoc } from 'firebase/firestore'
-import { authService } from '../../api/firebase'
+import { addDoc, collection, getFirestore } from 'firebase/firestore'
 
 export default function SignUp() {
   const emailRef = useRef(null)
