@@ -1,5 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from '@emotion/native'
 
 const Mypage = () => {
@@ -12,9 +14,17 @@ const Mypage = () => {
           <MyNickName>닉네임</MyNickName>
         </MyProfile>
         <MyReadedAndMarked>
-          <ReadedIcon>v</ReadedIcon>
+          <ReadedIcon>
+            <Ionicons name="checkmark-circle-outline" size={20} color="#000" />
+          </ReadedIcon>
           <ReadedCount>0</ReadedCount>
-          <MarkedIcon>♥</MarkedIcon>
+          <MarkedIcon>
+            <MaterialCommunityIcons
+              name="heart-circle-outline"
+              size={20}
+              color="#000"
+            />
+          </MarkedIcon>
           <MarkedCount>0</MarkedCount>
         </MyReadedAndMarked>
         <MyIntroduce>나를 소개하는 내용이 없습니다.</MyIntroduce>
@@ -31,43 +41,6 @@ const Mypage = () => {
             <FilterMarkedText>내가 보고싶은 책</FilterMarkedText>
           </FilterMarked>
         </RecordsCategory>
-        <RecordBookInfo>
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              // backgroundColor: 'darkgrey',
-              justifyContent: 'space-around',
-            }}
-          >
-            <BookItemImage
-              source={require('../assets/images/testBook.jpeg')}
-            ></BookItemImage>
-            <BookItemInfo>
-              <BookTitle>책 제목</BookTitle>
-              <BookAuthor>저자명</BookAuthor>
-              <BookPublish>출판사 - 출판연도</BookPublish>
-            </BookItemInfo>
-          </View>
-        </RecordBookInfo>
-        <RecordBookInfo>
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}
-          >
-            <BookItemImage
-              source={require('../assets/images/testBook.jpeg')}
-            ></BookItemImage>
-            <BookItemInfo>
-              <BookTitle>책 제목</BookTitle>
-              <BookAuthor>저자명</BookAuthor>
-              <BookPublish>출판사 - 출판연도</BookPublish>
-            </BookItemInfo>
-          </View>
-        </RecordBookInfo>
         <RecordBookInfo>
           <View
             style={{
