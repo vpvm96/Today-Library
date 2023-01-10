@@ -4,13 +4,28 @@ import styled from '@emotion/native'
 import { StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
-import { doc, updateDoc } from 'firebase/firestore'
+import { fireStore } from '../api/firebase'
+import {
+  doc,
+  collection,
+  updateDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
 
 const ProfileEdit = () => {
   const [nickName, setNickName] = useState('기본 닉네임')
   const [profileImg, setProfileImg] = useState(
     require('../assets/images/profileImg.png')
   )
+
+  const auth = getAuth()
+  const currentUser = auth.currentUser
+  console.log('currentUser.uid:', currentUser.uid)
+  console.log('currentUser.nickname:', currentUser.displayName)
+  // console.log(currentUser)
 
   // const getProfileRequest = ()
 
@@ -35,7 +50,31 @@ const ProfileEdit = () => {
     }
   }
 
-  const onSaveProfileHandler = async () => {}
+  // 기존 닉네임 가져오기
+  const getNickName = () => {
+    const q = query(
+      collection(fireStore, 'users'),
+      where('uid', '==', currentUser.uid)
+    )
+    getDocs(q).then((querySnapshop) => {
+      const userInfo = []
+      querySnapshop.forEach((doc) => {
+        userInfo.push({
+          id: doc.data().id,
+          uid: doc.data().uid,
+          email: doc.data().email,
+          nickname: doc.data().nickname,
+        })
+
+        // console.log(userInfo[0].nickname)
+        setNickName(userInfo[0].nickname)
+      })
+    })
+  }
+
+  useEffect(() => {
+    getNickName()
+  }, [])
 
   return (
     <StyleWrap>
