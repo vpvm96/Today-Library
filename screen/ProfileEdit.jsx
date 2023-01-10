@@ -1,24 +1,54 @@
-import React from 'react'
 import { View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 import { StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import * as ImagePicker from 'expo-image-picker'
 
 const ProfileEdit = () => {
+  const [nickName, setNickName] = useState('')
+
+  const [profileImg, setprofileImg] = useState(
+    require('../assets/images/profileImg.png')
+  )
+
+  // const getProfileRequest = ()
+
+  const handlePhotoBtnPress = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    })
+
+    console.log(result.assets)
+    setprofileImg(result.assets)
+
+    // if (!result.cancelled) {
+    //   // onChangePhoto(result.uri)
+    //   setprofileImg(result.url)
+    // }
+  }
+
   return (
     <StyleWrap>
       {/* 프로필 이미지 */}
       <ProfileImageContainer>
         <ProfileImage
-          source={require('../assets/images/profileImg.png')}
+          source={profileImg}
+          onChangePhoto={setprofileImg}
         ></ProfileImage>
-        <IconContainer style={{ position: 'absolute', right: 0, bottom: 0 }}>
+        <ChangeImageButton
+          style={{ position: 'absolute', right: 0, bottom: 0 }}
+          onPress={handlePhotoBtnPress}
+        >
           <Ionicons name="md-camera-reverse" size={24} color="black" />
-        </IconContainer>
+        </ChangeImageButton>
       </ProfileImageContainer>
       {/* 닉네임 */}
       <NiNameInputContainer>
-        <NickNameInput>기본 닉네임</NickNameInput>
+        <NickNameInput value={nickName}></NickNameInput>
       </NiNameInputContainer>
       {/* 나의 소개 */}
       <IntroduceLabel>나의 메세지</IntroduceLabel>
@@ -47,7 +77,7 @@ const StyleWrap = styled.View`
   align-items: center;
 `
 
-const ProfileImageContainer = styled.TouchableOpacity`
+const ProfileImageContainer = styled.View`
   width: 150px;
   height: 150px;
   /* background-color: red; */
@@ -59,9 +89,10 @@ const ProfileImage = styled.Image`
   width: 150px;
   height: 150px;
   margin: 0 auto;
+  border-radius: 100px;
 `
 
-const IconContainer = styled.View`
+const ChangeImageButton = styled.TouchableOpacity`
   width: 40px;
   height: 40px;
   background-color: white;
