@@ -1,5 +1,5 @@
 import styled from '@emotion/native'
-import { FontAwesome } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
@@ -20,11 +20,11 @@ const NewBookItem = ({ book }) => {
           <StyleNewBookText>{author}</StyleNewBookText>
           <StyleNewBookEtcWrap>
             <StyleNewBookText>{publisher}</StyleNewBookText>
-            <StyleNewBookText>-</StyleNewBookText>
+            <StyleNewBookText>&#8226;</StyleNewBookText>
             <StyleNewBookText>{createdAt}</StyleNewBookText>
           </StyleNewBookEtcWrap>
-          <StyleNewBookEtcWrap>
-            <FontAwesome name="check-circle-o" size={18} color="#000" />
+          <StyleNewBookIconWrap>
+            <Ionicons name="checkmark-circle-outline" size={18} color="#000" />
             <StyleNewBookText>{read}</StyleNewBookText>
             <MaterialCommunityIcons
               name="heart-circle-outline"
@@ -32,7 +32,7 @@ const NewBookItem = ({ book }) => {
               color="#000"
             />
             <StyleNewBookText>{bookmark}</StyleNewBookText>
-          </StyleNewBookEtcWrap>
+          </StyleNewBookIconWrap>
         </StyleNewBookInfo>
       </StyleNewBookWrap>
     </StyleNewBookItem>
@@ -73,9 +73,17 @@ const StyleNewBookTitle = styled.Text`
 
 const StyleNewBookText = styled.Text`
   font-size: 15px;
+  margin-right: 8px;
 `
 
 const StyleNewBookEtcWrap = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+`
+
+const StyleNewBookIconWrap = styled.View`
   width: 70%;
   display: flex;
   flex-direction: row;
