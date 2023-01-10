@@ -9,19 +9,24 @@ import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
+import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore'
 
 export default function SignUp() {
   const emailRef = useRef(null)
   const pwRef = useRef(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [checkPassword, setCheckPassword] = useState('')
+  const [nickname, setNickname] = useState('')
   const [secureText, setSecureText] = useState(null)
   const [touchEye, setTouchEye] = useState(true)
   const [warningText, setWarningText] = useState('')
   const navigation = useNavigation()
 
   const auth = getAuth()
+  const dbService = getFirestore()
 
+  // password 아이콘 스위치 기능
   const TouchEyeBtn = () => {
     setTouchEye((prev) => !prev)
     if (touchEye === false) {
@@ -31,6 +36,7 @@ export default function SignUp() {
     }
   }
 
+  // 로그인 되어있으면 페이지 이동
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       console.log('onAuthStateChanged user', user)
@@ -40,6 +46,7 @@ export default function SignUp() {
     })
   }, [])
 
+  // 유효성 검사
   const validateInputs = () => {
     if (!email) {
       setWarningText('email을 입력해주세요.')
@@ -89,6 +96,14 @@ export default function SignUp() {
           setWarningText('이미 사용중인 아이디입니다.')
         }
       })
+    addDoc(collection(dbService, 'user'), {
+      email: email,
+      password: password,
+      name: nickname,
+      // bookmark:[bookUid: ],
+      // readBook: [readBookuid: ],
+      // profileImg: ,
+    })
   }
 
   const linkTo = useLinkTo()
@@ -111,7 +126,7 @@ export default function SignUp() {
           ref={pwRef}
           returnKeyType="send"
           textContentType="password"
-          secureTextEntry={secureText ? true : false}
+          secureTextEntry={secureText ? false : true}
         />
         <TouchIcon onPress={TouchEyeBtn}>
           {touchEye ? (
@@ -121,17 +136,18 @@ export default function SignUp() {
           )}
         </TouchIcon>
       </PasswordBody>
-      {/* <SignUpTextInput
-        placeholder='PasswordConfirm'
-        value={password}
-        onChangeText={(text) => setPassword(text)}
+      <SignUpTextInput
+        placeholder="PasswordConfirm"
+        value={checkPassword}
+        onChangeText={(text) => setCheckPassword(text)}
         secureTextEntry
-      /> */}
-      {/* <SignUpNicknameTextInput
-        placeholder='Nickname'
+      />
+      <SignUpNicknameTextInput
+        placeholder="Nickname"
         value={nickname}
+        textContentType="name"
         onChangeText={(text) => setNickname(text)}
-      /> */}
+      />
       <WarnigText>{warningText}</WarnigText>
 
       <SignUpBtn onPress={handleSignUp}>
@@ -161,6 +177,7 @@ const SignUpTextInput = styled.TextInput`
   height: 20%;
   padding: 10px;
 
+  border-width: 0.3px;
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 
@@ -178,24 +195,29 @@ const PasswordBody = styled.View`
   width: 70%;
   height: 20%;
   padding: 10px;
+  margin-bottom: 5%;
 
+  border-width: 0.3px;
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 `
 const LoginPasswordInput = styled.TextInput``
 const TouchIcon = styled.TouchableOpacity``
-// const SignUpNicknameTextInput = styled.TextInput`
-//   width: 70%;
-//   height: 20%;
 
-//   border-radius: 10px;
-//   background-color: rgb(247, 244, 244);
+const SignUpNicknameTextInput = styled.TextInput`
+  width: 70%;
+  height: 20%;
+  padding: 10px;
 
-//   ::placeholder {
-//   }
+  border-width: 0.3px;
+  border-radius: 10px;
+  background-color: rgb(247, 244, 244);
 
-//   margin-bottom: 5%;
-// `;
+  ::placeholder {
+  }
+
+  margin-bottom: 5%;
+`
 
 const WarnigText = styled.Text`
   color: red;
@@ -205,6 +227,7 @@ const SignUpBtn = styled.TouchableOpacity`
   height: 20%;
   background-color: rgb(89, 167, 147);
   border-radius: 5px;
+
   margin-top: 5%;
   margin-bottom: 5%;
 
