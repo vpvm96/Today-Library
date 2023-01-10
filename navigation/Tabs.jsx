@@ -7,10 +7,11 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 import { Image, TouchableOpacity, View, Text } from 'react-native'
 import ProfileEdit from '../screen/ProfileEdit'
+import Subs from './Subs'
 
 const Tab = createBottomTabNavigator()
 
-const Tabs = () => {
+const Tabs = ({ navigation }) => {
   return (
     <Tab.Navigator
       initialRouteName="Home" // 처음 랜더링시 Home 화면 보여줌
@@ -39,7 +40,7 @@ const Tabs = () => {
             <FontAwesome name="user" size={32} color={color} />
           ),
           headerRight: () => (
-            <SettingIcon>
+            <SettingIcon onPress={() => navigation.navigate('Subs')}>
               <Ionicons name="ios-settings-sharp" size={20} color="black" />
             </SettingIcon>
           ),
@@ -48,7 +49,7 @@ const Tabs = () => {
         component={Mypage}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="ios-settings-sharp" size={20} color={color} />
@@ -56,7 +57,7 @@ const Tabs = () => {
         }}
         name="ProfileEdit"
         component={ProfileEdit}
-      />
+      /> */}
     </Tab.Navigator>
   )
 }

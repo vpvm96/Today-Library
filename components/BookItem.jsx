@@ -11,7 +11,7 @@ const BookItem = ({ bookitem }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
+    // borderBottomWidth: 1,
     height: 100,
   },
   text: {

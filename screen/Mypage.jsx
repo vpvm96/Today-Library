@@ -179,8 +179,8 @@ const FilterReded = styled.TouchableOpacity`
   background-color: #61d2bc;
   width: 50%;
   height: 100%;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  /* border-top-left-radius: 5px; */
+  /* border-bottom-left-radius: 5px; */
 `
 const FilterRededText = styled.Text`
   font-size: 18px;
@@ -191,8 +191,8 @@ const FilterMarked = styled.TouchableOpacity`
   background-color: lightgrey;
   width: 50%;
   height: 100%;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  /* border-top-right-radius: 5px; */
+  /* border-bottom-right-radius: 5px; */
 `
 const FilterMarkedText = styled.Text`
   font-size: 18px;
