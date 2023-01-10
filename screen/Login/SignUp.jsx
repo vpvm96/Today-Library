@@ -9,7 +9,7 @@ import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
-import { addDoc, collection, getFirestore, setDoc } from 'firebase/firestore'
+import { addDoc, collection, getFirestore } from 'firebase/firestore'
 
 export default function SignUp() {
   const emailRef = useRef(null)
@@ -25,7 +25,6 @@ export default function SignUp() {
 
   const auth = getAuth()
   const dbService = getFirestore()
-
   // password 아이콘 스위치 기능
   const TouchEyeBtn = () => {
     setTouchEye((prev) => !prev)
@@ -39,9 +38,9 @@ export default function SignUp() {
   // 로그인 되어있으면 페이지 이동
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log('onAuthStateChanged user', user)
+      // console.log('onAuthStateChanged user', user);
       if (user) {
-        navigation.replace('Main')
+        navigation.replace('Tabs')
       }
     })
   }, [])
@@ -56,6 +55,10 @@ export default function SignUp() {
     if (!password) {
       setWarningText('password를 입력해주세요.')
       pwRef.current.focus()
+      return true
+    }
+    if (checkPassword !== password) {
+      setWarningText('password를 확인해주세요.')
       return true
     }
     const matchedEmail = email.match(emailRegex)
@@ -96,13 +99,14 @@ export default function SignUp() {
           setWarningText('이미 사용중인 아이디입니다.')
         }
       })
-    addDoc(collection(dbService, 'user'), {
+
+    addDoc(collection(dbService, 'users'), {
       email: email,
       password: password,
-      name: nickname,
-      // bookmark:[bookUid: ],
-      // readBook: [readBookuid: ],
-      // profileImg: ,
+      nickname: nickname,
+      bookmark: [''],
+      readBook: [''],
+      profileImg: '',
     })
   }
 
@@ -162,7 +166,7 @@ export default function SignUp() {
 
 const SignUpPageBody = styled.View`
   width: 100%;
-  height: 200px;
+  height: 100%;
 
   background-color: white;
 
@@ -174,7 +178,7 @@ const SignUpImage = styled.Image`
 `
 const SignUpTextInput = styled.TextInput`
   width: 70%;
-  height: 20%;
+  height: 40px;
   padding: 10px;
 
   border-width: 0.3px;
@@ -193,7 +197,7 @@ const PasswordBody = styled.View`
   align-items: center;
 
   width: 70%;
-  height: 20%;
+  height: 40px;
   padding: 10px;
   margin-bottom: 5%;
 
@@ -206,7 +210,7 @@ const TouchIcon = styled.TouchableOpacity``
 
 const SignUpNicknameTextInput = styled.TextInput`
   width: 70%;
-  height: 20%;
+  height: 40px;
   padding: 10px;
 
   border-width: 0.3px;
@@ -224,7 +228,7 @@ const WarnigText = styled.Text`
 `
 const SignUpBtn = styled.TouchableOpacity`
   width: 70%;
-  height: 20%;
+  height: 40px;
   background-color: rgb(89, 167, 147);
   border-radius: 5px;
 

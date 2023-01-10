@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
   getAuth,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useLinkTo, useNavigation } from '@react-navigation/native'
@@ -38,7 +38,7 @@ export default function Login() {
     onAuthStateChanged(auth, (user) => {
       console.log('onAuthStateChanged user', user)
       if (user) {
-        navigation.replace('')
+        navigation.replace('Tabs')
       }
     })
   }, [])
@@ -140,27 +140,29 @@ export default function Login() {
 
 const LoginPageBody = styled.View`
   width: 100%;
-  height: 200px;
+  height: 100%;
 
   background-color: white;
 
   align-items: center;
 `
 const LogoImage = styled.Image`
-  margin-top: 25%;
+  margin-top: 35%;
   margin-bottom: 10%;
 `
 const LoginTextInput = styled.TextInput`
   width: 70%;
-  height: 20%;
+  height: 40px;
   padding: 10px;
 
+  border-width: 0.3px;
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 
   ::placeholder {
   }
 
+  margin-top: 5%;
   margin-bottom: 5%;
 `
 
@@ -171,20 +173,22 @@ const PasswordBody = styled.View`
   align-items: center;
 
   width: 70%;
-  height: 20%;
+  height: 40px;
   padding: 10px;
 
+  border-width: 0.3px;
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 `
 const LoginPasswordInput = styled.TextInput``
 const TouchIcon = styled.TouchableOpacity``
 const WarnigText = styled.Text`
+  margin-top: 10px;
   color: red;
 `
 const LoginBtn = styled.TouchableOpacity`
   width: 70%;
-  height: 20%;
+  height: 40px;
   background-color: rgb(89, 167, 147);
   border-radius: 5px;
   margin-top: 5%;
@@ -200,7 +204,7 @@ const LogginBtnText = styled.Text`
 `
 const NavigateSignUpPage = styled.TouchableOpacity`
   width: 70%;
-  height: 20%;
+  height: 40px;
   border-radius: 5px;
   background-color: rgb(89, 167, 147);
 

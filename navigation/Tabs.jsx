@@ -8,6 +8,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import { Image, TouchableOpacity, View, Text } from 'react-native'
 import ProfileEdit from '../screen/ProfileEdit'
 import Subs from './Subs'
+import Login from '../screen/Login/Login'
 
 const Tab = createBottomTabNavigator()
 
@@ -48,6 +49,7 @@ const Tabs = ({ navigation }) => {
         name="Mypage"
         component={Mypage}
       />
+      <Tab.Screen name="LoginPage" component={Login} />
     </Tab.Navigator>
   )
 }
