@@ -12,6 +12,7 @@ import {
   getDocs,
   query,
   where,
+  setIndexConfiguration,
 } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 
@@ -20,14 +21,11 @@ const ProfileEdit = () => {
   const [profileImg, setProfileImg] = useState(
     require('../assets/images/profileImg.png')
   )
+  const [message, setMessage] = useState('')
+  const [saveId, setSaveId] = useState('')
 
   const auth = getAuth()
   const currentUser = auth.currentUser
-  console.log('currentUser.uid:', currentUser.uid)
-  console.log('currentUser.nickname:', currentUser.displayName)
-  // console.log(currentUser)
-
-  // const getProfileRequest = ()
 
   // 디바이스에서 이미지 선택 기능
   const onChangeImageHandler = async () => {
@@ -38,12 +36,9 @@ const ProfileEdit = () => {
       quality: 1,
     })
 
-    console.log(result.assets)
-    // setprofileImg(result.assets)
-    // 이미지 선택 취소가 아닐 경우, 선택 이미지 세팅
+    // console.log(result.assets)
+
     if (result.assets !== null) {
-      // onChangePhoto(result.assets)
-      // setprofileImg(result.url)
       setProfileImg(result.assets)
     } else {
       setProfileImg(require('../assets/images/profileImg.png'))
@@ -60,16 +55,29 @@ const ProfileEdit = () => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
         userInfo.push({
-          id: doc.data().id,
-          uid: doc.data().uid,
-          email: doc.data().email,
           nickname: doc.data().nickname,
+          mymessage: doc.data().mymessage,
         })
-
-        // console.log(userInfo[0].nickname)
         setNickName(userInfo[0].nickname)
+        setSaveId(userInfo[0].id)
+        setMessage(userInfo[0].mymessage)
       })
     })
+  }
+
+  // 프로필 변경 내용 FB 저장
+  const onSaveProfileHandler = async (id) => {
+    try {
+      await updateDoc(doc(fireStore, 'users', id), {
+        nickname: nickName,
+        mymessage: message,
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      console.log('수정 완료')
+    }
+    setNickName(nickName)
   }
 
   useEffect(() => {
@@ -103,10 +111,12 @@ const ProfileEdit = () => {
       <IntroduceInput
         placeholder="내용을 입력해주세요."
         multiline={true}
+        onChangeText={setMessage}
+        value={message}
       ></IntroduceInput>
       <ButtonWrap>
         <SaveButton>
-          <SaveButtonText onPress={() => onSaveProfileHandler}>
+          <SaveButtonText onPress={() => onSaveProfileHandler(currentUser.uid)}>
             저장
           </SaveButtonText>
         </SaveButton>
