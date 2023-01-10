@@ -6,36 +6,22 @@ import { getBookRequest } from '../api/bookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
 import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
 
-//예비용 데이터
-const obj = [
-  {
-    id: '1',
-    title: '제목1',
-    writer: '저자1',
-    publisher: '출판1',
-    year: 2005,
-  },
-  {
-    id: '2',
-    title: '제목2',
-    writer: '저자2',
-    publisher: '출판2',
-    year: 2002,
-  },
-  {
-    id: '3',
-    title: '제목3',
-    writer: '저자3',
-    publisher: '출판3',
-    year: 2003,
-  },
-]
-
 const Home = () => {
-  // const [data, setData] = useState([obj])
   const [books, setBooks] = useState([])
+  const [recommendBooks, setRecommendBooks] = useState([])
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
+
+  const randomBooksfunc = () => {
+    const randomBooks = []
+
+    for (let i = 0; i < 5; i++) {
+      let randomNum = Math.floor(Math.random() * books.length)
+      randomBooks.push(books[randomNum])
+    }
+
+    setRecommendBooks(randomBooks)
+  }
 
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
   const onSubmitHandler = () => {
@@ -45,7 +31,8 @@ const Home = () => {
 
   useEffect(() => {
     getBookRequest(setBooks)
-  }, [])
+    randomBooksfunc()
+  }, [category])
 
   return (
     <>
@@ -87,8 +74,8 @@ const Home = () => {
         />
       ) : (
         <FlatList
-          data={obj}
-          renderItem={({ item }) => <RecommendBookItem item={item} />}
+          data={recommendBooks}
+          renderItem={({ item }) => <RecommendBookItem recbook={item} />}
           keyExtractor={(item) => item.id}
         />
       )}
@@ -150,7 +137,5 @@ const StyleCategoryText = styled.Text`
   font-size: 20px;
   font-weight: 700;
 `
-
-// flatlist 영역
 
 export default Home
