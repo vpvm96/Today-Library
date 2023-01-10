@@ -9,7 +9,7 @@ import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
-import { addDoc, collection, getFirestore } from 'firebase/firestore'
+import { getFirestore, setDoc, doc } from 'firebase/firestore'
 
 export default function SignUp() {
   const emailRef = useRef(null)
@@ -89,7 +89,7 @@ export default function SignUp() {
           text1: '회원가입 성공',
           text2: `${email}으로 가입되었습니다.`,
         })
-        addDoc(collection(dbService, 'users'), {
+        setDoc(doc(dbService, 'users', res.user.uid), {
           uid: res.user.uid,
           email: email,
           password: password,
