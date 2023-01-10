@@ -7,6 +7,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore'
 
@@ -27,6 +28,19 @@ export const getReviewRequest = (setReviews, bookId) => {
     })
     setReviews(newReviews)
   })
+}
+
+export const completedReadBook = async (book, user) => {
+  const { id, read, readUid } = book
+  const { uid, readBook } = user
+  const bookRef = doc(fireStore, 'books', id)
+  const userRef = doc(fireStore, 'users', uid)
+  try {
+    await updateDoc(bookRef, { read: read + 1, readUid: [...readUid, uid] })
+    await updateDoc(userRef, { readBook: [...readBook, id] })
+  } catch (e) {
+    throw new Error(e)
+  }
 }
 
 export const createReview = async (review) => {

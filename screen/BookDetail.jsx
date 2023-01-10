@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { Rating } from 'react-native-ratings'
+import { Alert } from 'react-native'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
-import { getReviewRequest } from '../api/bookDetailService'
+import { getAuth } from 'firebase/auth'
+import { getAuthCurrentUserInfo } from '../api/authService'
+import { getReviewRequest, completedReadBook } from '../api/bookDetailService'
 import BookDetailHeader from '../components/BookDetail/BookDetailHead'
 import BookDetailComment from '../components/BookDetail/BookDetailComment'
 import BookReviewModal from '../components/BookDetail/BookReviewModal'
 import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
-import { getAuth } from 'firebase/auth'
 
 const BookDetail = ({ route: { params: book } }) => {
+  const auth = getAuth()
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
+  const [user, setUser] = useState([])
   const [
     reviewValue,
     setReviewValue,
@@ -19,12 +24,18 @@ const BookDetail = ({ route: { params: book } }) => {
     createReviewClickHandler,
   ] = useInput('')
   const [isRating, setIsRating] = useState(0)
+  const { navigate } = useNavigation()
 
   useEffect(() => {
     getReviewRequest(setReviews, book.id)
+    getAuthCurrentUserInfo(setUser)
   }, [])
 
   const openDetailModalHandler = () => {
+    if (!auth.currentUser) {
+      navigate('LoginPage')
+      return
+    }
     setIsOpenModal(true)
   }
 
@@ -39,8 +50,22 @@ const BookDetail = ({ route: { params: book } }) => {
   }
 
   const createDetailReviewHandler = () => {
-    createReviewClickHandler(isRating, book.id)
+    createReviewClickHandler(isRating, book.id, user)
     setIsOpenModal(false)
+  }
+
+  const completedReadBookHandler = () => {
+    if (!auth.currentUser) {
+      navigate('LoginPage')
+      return
+    }
+    if (book.readUid.includes(auth.currentUser.uid)) {
+      Alert.alert('이미 읽은 책 입니다.', '', [
+        { text: '확인', style: 'cancel' },
+      ])
+      return
+    }
+    completedReadBook(book, user)
   }
 
   return (
@@ -52,7 +77,7 @@ const BookDetail = ({ route: { params: book } }) => {
             <BookDetailRatingText>총 평가</BookDetailRatingText>
             <Rating startingValue={3} imageSize={25} readonly />
           </BookDetailRatingBox>
-          <BookDetailReadButtonBox>
+          <BookDetailReadButtonBox onPress={completedReadBookHandler}>
             <MaterialCommunityIcons name="book" size={24} color="#36A992" />
             <BookDetailReadText>읽음</BookDetailReadText>
           </BookDetailReadButtonBox>

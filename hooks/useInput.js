@@ -8,16 +8,17 @@ const useInput = (initialValue) => {
     setValue(value)
   }, [])
 
-  const onClickHandler = (rating, bookId) => {
+  const onClickHandler = (rating, bookId, user) => {
     const reviewObj = {
-      nickname: '', // 로그인 기능이 있어야 가능.
+      nickname: user.nickname,
       content: value,
       rating,
-      userId: '', // 로그인 기능이 있어야 가능.
+      userId: user.uid,
       bookId,
       createdAt: Date.now(),
     }
     createReview(reviewObj)
+    setValue('')
   }
 
   return [value, setValue, onChageHandler, onClickHandler]
