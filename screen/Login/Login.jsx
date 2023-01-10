@@ -34,14 +34,14 @@ export default function Login() {
   const linkTo = useLinkTo()
   const MoveSignUpPage = () => linkTo('/SignUpPage/SignUp')
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log('onAuthStateChanged user', user)
-      if (user) {
-        navigation.replace('Tabs')
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     console.log('onAuthStateChanged user', user)
+  //     if (user) {
+  //       navigation.replace('Tabs')
+  //     }
+  //   })
+  // }, [])
 
   const validateInputs = () => {
     if (!email) {
@@ -103,7 +103,7 @@ export default function Login() {
     <LoginPageBody>
       <LogoImage source={require('../../assets/images/loginLogo.png')} />
       <LoginTextInput
-        placeholder="UserName"
+        placeholder="UserEmail"
         value={email}
         onChangeText={(text) => setEmail(text)}
         ref={emailRef}
@@ -117,7 +117,7 @@ export default function Login() {
           ref={pwRef}
           returnKeyType="send"
           textContentType="password"
-          secureTextEntry={secureText ? true : false}
+          secureTextEntry={secureText ? false : true}
         />
         <TouchIcon onPress={TouchEyeBtn}>
           {touchEye ? (
@@ -147,7 +147,7 @@ const LoginPageBody = styled.View`
   align-items: center;
 `
 const LogoImage = styled.Image`
-  margin-top: 35%;
+  margin-top: 25%;
   margin-bottom: 10%;
 `
 const LoginTextInput = styled.TextInput`

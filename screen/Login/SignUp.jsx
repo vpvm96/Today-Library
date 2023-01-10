@@ -9,7 +9,8 @@ import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
-import { addDoc, collection, getFirestore } from 'firebase/firestore'
+import { addDoc, collection, getFirestore, updateDoc } from 'firebase/firestore'
+import { authService } from '../../api/firebase'
 
 export default function SignUp() {
   const emailRef = useRef(null)
@@ -25,6 +26,7 @@ export default function SignUp() {
 
   const auth = getAuth()
   const dbService = getFirestore()
+
   // password 아이콘 스위치 기능
   const TouchEyeBtn = () => {
     setTouchEye((prev) => !prev)
@@ -38,7 +40,7 @@ export default function SignUp() {
   // 로그인 되어있으면 페이지 이동
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      // console.log('onAuthStateChanged user', user);
+      console.log('onAuthStateChanged', user.uid)
       if (user) {
         navigation.replace('Tabs')
       }
@@ -116,7 +118,7 @@ export default function SignUp() {
     <SignUpPageBody>
       <SignUpImage source={require('../../assets/images/loginLogo.png')} />
       <SignUpTextInput
-        placeholder="UserName"
+        placeholder="UserEmail"
         value={email}
         onChangeText={(text) => setEmail(text)}
         ref={emailRef}
@@ -173,7 +175,7 @@ const SignUpPageBody = styled.View`
   align-items: center;
 `
 const SignUpImage = styled.Image`
-  margin-top: 25%;
+  margin-top: 20%;
   margin-bottom: 10%;
 `
 const SignUpTextInput = styled.TextInput`
@@ -205,7 +207,9 @@ const PasswordBody = styled.View`
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 `
-const LoginPasswordInput = styled.TextInput``
+const LoginPasswordInput = styled.TextInput`
+  width: 90%;
+00`
 const TouchIcon = styled.TouchableOpacity``
 
 const SignUpNicknameTextInput = styled.TextInput`
