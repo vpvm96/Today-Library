@@ -1,40 +1,37 @@
-import React, { useState } from 'react'
 import styled from '@emotion/native'
 import { FontAwesome } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
-const NewBookItem = ({ item }) => {
+const NewBookItem = ({ book }) => {
+  const { id, title, author, publisher, createdAt, bookmark, read, imgUrl } =
+    book
   const { navigate } = useNavigation()
-
-  const [readCount, setReadCount] = useState(0)
-  const [bookmarkCount, setbookmarkCount] = useState(0)
 
   return (
     <StyleNewBookItem
-    // onPress={() => navigate('Stacks', { screen: 'BookDetail' })}
+      key={id}
+      onPress={() => navigate('Stacks', { screen: 'BookDetail', params: book })}
     >
       <StyleNewBookWrap>
-        <StyleNewBookImg
-          source={require('../../assets/images/testBook.jpeg')}
-        ></StyleNewBookImg>
+        <StyleNewBookImg source={{ uri: imgUrl }}></StyleNewBookImg>
         <StyleNewBookInfo>
-          <StyleNewBookTitle>{item.title}</StyleNewBookTitle>
-          <StyleNewBookText>{item.writer}</StyleNewBookText>
+          <StyleNewBookTitle>{title}</StyleNewBookTitle>
+          <StyleNewBookText>{author}</StyleNewBookText>
           <StyleNewBookEtcWrap>
-            <StyleNewBookText>{item.publisher}</StyleNewBookText>
+            <StyleNewBookText>{publisher}</StyleNewBookText>
             <StyleNewBookText>-</StyleNewBookText>
-            <StyleNewBookText>{item.year}</StyleNewBookText>
+            <StyleNewBookText>{createdAt}</StyleNewBookText>
           </StyleNewBookEtcWrap>
           <StyleNewBookEtcWrap>
             <FontAwesome name="check-circle-o" size={18} color="#000" />
-            <StyleNewBookText>{readCount}</StyleNewBookText>
+            <StyleNewBookText>{read}</StyleNewBookText>
             <MaterialCommunityIcons
               name="heart-circle-outline"
               size={18}
               color="#000"
             />
-            <StyleNewBookText>{bookmarkCount}</StyleNewBookText>
+            <StyleNewBookText>{bookmark}</StyleNewBookText>
           </StyleNewBookEtcWrap>
         </StyleNewBookInfo>
       </StyleNewBookWrap>

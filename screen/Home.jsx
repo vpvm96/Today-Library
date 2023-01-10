@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, View, Text, TouchableOpacity, FlatList } from 'react-native'
 import styled from '@emotion/native'
 import { Feather } from '@expo/vector-icons'
+import { getBookRequest } from '../api/bookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
 import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
 
@@ -32,6 +33,7 @@ const obj = [
 
 const Home = () => {
   // const [data, setData] = useState([obj])
+  const [books, setBooks] = useState([])
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
 
@@ -40,6 +42,10 @@ const Home = () => {
     if (text === '')
       return Alert.alert('알림', '도서명을 입력해주세요.', [{ text: '확인' }])
   }
+
+  useEffect(() => {
+    getBookRequest(setBooks)
+  }, [])
 
   return (
     <>
@@ -75,8 +81,8 @@ const Home = () => {
       {/* flatlist 영역 */}
       {category === 'newbook' ? (
         <FlatList
-          data={obj}
-          renderItem={({ item }) => <NewBookItem item={item} />}
+          data={books}
+          renderItem={({ item }) => <NewBookItem book={item} />}
           keyExtractor={(item) => item.id}
         />
       ) : (
@@ -106,8 +112,8 @@ const StyleTextInput = styled.TextInput`
 
 const StyleIconWrap = styled.TouchableOpacity`
   position: absolute;
-  top: 18;
-  right: 25;
+  top: 18px;
+  right: 25px;
 `
 
 // 카테고리 영역
@@ -126,7 +132,7 @@ const StyleCategoryLeftButtons = styled.TouchableOpacity`
   height: 60px;
   border-bottom-color: #61d2bc;
   border-bottom-width: ${({ category }) =>
-    category === 'newbook' ? '2' : '0'};
+    category === 'newbook' ? '2px' : '0'};
 `
 
 const StyleCategoryRightButtons = styled.TouchableOpacity`
@@ -137,7 +143,7 @@ const StyleCategoryRightButtons = styled.TouchableOpacity`
   height: 60px;
   border-bottom-color: #61d2bc;
   border-bottom-width: ${({ category }) =>
-    category === 'recommendbook' ? '2' : '0'};
+    category === 'recommendbook' ? '2px' : '0'};
 `
 
 const StyleCategoryText = styled.Text`

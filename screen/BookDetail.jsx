@@ -8,7 +8,7 @@ import BookReviewModal from '../components/BookDetail/BookReviewModal'
 import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
 
-const BookDetail = () => {
+const BookDetail = ({ route: { params: book } }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [reviewValue, reviewValueChangeHandler, createReviewClickHandler] =
     useInput('')
@@ -78,7 +78,7 @@ const BookDetail = () => {
 
   return (
     <BookDetailWrap>
-      <BookDetailHeader />
+      <BookDetailHeader book={book} />
       <BookDetailBodyWrap>
         <BookDetailBodyRatingContainer>
           <BookDetailRatingBox>
