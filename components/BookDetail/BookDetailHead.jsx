@@ -2,27 +2,25 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet } from 'react-native'
 import styled from '@emotion/native'
 
-const MovieDetailHeader = () => {
+const MovieDetailHeader = ({ book }) => {
+  const { title, desc, imgUrl } = book
   return (
     <DetailHeadWrap>
       <DetailHeadPostImgBox>
         <DetailHeadBgImg
-          source={require('../../assets/images/testBook.jpeg')}
+          source={{ uri: imgUrl }}
           style={StyleSheet.absoluteFill}
         />
         <LinearGradient
           style={StyleSheet.absoluteFill}
           colors={['transparent', 'black']}
         />
-        <DetailHeadPostImg
-          source={require('../../assets/images/testBook.jpeg')}
-          resizeMode="stretch"
-        />
+        <DetailHeadPostImg source={{ uri: imgUrl }} resizeMode="stretch" />
       </DetailHeadPostImgBox>
       <DetailHeadContentBox>
-        <DetailHeadTitleText>위로의 책</DetailHeadTitleText>
+        <DetailHeadTitleText>{title}</DetailHeadTitleText>
         <DetailHeadDescText>
-          이 책의 줄거리 어쩌구 저쩌구 이 책의 줄거리 어쩌구 저쩌구
+          {desc.slice(0, 52)} {desc.length > 52 && '...'}
         </DetailHeadDescText>
       </DetailHeadContentBox>
     </DetailHeadWrap>
