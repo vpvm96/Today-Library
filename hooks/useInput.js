@@ -8,18 +8,19 @@ const useInput = (initialValue) => {
     setValue(value)
   }, [])
 
-  const onClickHandler = (rating) => {
+  const onClickHandler = (rating, bookId) => {
     const reviewObj = {
-      nickname: '',
+      nickname: '', // 로그인 기능이 있어야 가능.
       content: value,
       rating,
-      userId: '',
+      userId: '', // 로그인 기능이 있어야 가능.
+      bookId,
       createdAt: Date.now(),
     }
     createReview(reviewObj)
   }
 
-  return [value, onChageHandler, onClickHandler]
+  return [value, setValue, onChageHandler, onClickHandler]
 }
 
 export default useInput
