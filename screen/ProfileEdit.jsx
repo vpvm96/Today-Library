@@ -4,17 +4,18 @@ import styled from '@emotion/native'
 import { StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
+import { doc, updateDoc } from 'firebase/firestore'
 
 const ProfileEdit = () => {
-  const [nickName, setNickName] = useState('')
-
-  const [profileImg, setprofileImg] = useState(
+  const [nickName, setNickName] = useState('기본 닉네임')
+  const [profileImg, setProfileImg] = useState(
     require('../assets/images/profileImg.png')
   )
 
   // const getProfileRequest = ()
 
-  const handlePhotoBtnPress = async () => {
+  // 디바이스에서 이미지 선택 기능
+  const onChangeImageHandler = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -23,13 +24,18 @@ const ProfileEdit = () => {
     })
 
     console.log(result.assets)
-    setprofileImg(result.assets)
-
-    // if (!result.cancelled) {
-    //   // onChangePhoto(result.uri)
-    //   setprofileImg(result.url)
-    // }
+    // setprofileImg(result.assets)
+    // 이미지 선택 취소가 아닐 경우, 선택 이미지 세팅
+    if (result.assets !== null) {
+      // onChangePhoto(result.assets)
+      // setprofileImg(result.url)
+      setProfileImg(result.assets)
+    } else {
+      setProfileImg(require('../assets/images/profileImg.png'))
+    }
   }
+
+  const onSaveProfileHandler = async () => {}
 
   return (
     <StyleWrap>
@@ -37,18 +43,21 @@ const ProfileEdit = () => {
       <ProfileImageContainer>
         <ProfileImage
           source={profileImg}
-          onChangePhoto={setprofileImg}
+          onChangePhoto={setProfileImg}
         ></ProfileImage>
         <ChangeImageButton
           style={{ position: 'absolute', right: 0, bottom: 0 }}
-          onPress={handlePhotoBtnPress}
+          onPress={onChangeImageHandler}
         >
           <Ionicons name="md-camera-reverse" size={24} color="black" />
         </ChangeImageButton>
       </ProfileImageContainer>
       {/* 닉네임 */}
       <NiNameInputContainer>
-        <NickNameInput value={nickName}></NickNameInput>
+        <NickNameInput
+          onChangeText={setNickName}
+          value={nickName}
+        ></NickNameInput>
       </NiNameInputContainer>
       {/* 나의 소개 */}
       <IntroduceLabel>나의 메세지</IntroduceLabel>
@@ -58,7 +67,9 @@ const ProfileEdit = () => {
       ></IntroduceInput>
       <ButtonWrap>
         <SaveButton>
-          <SaveButtonText>저장</SaveButtonText>
+          <SaveButtonText onPress={() => onSaveProfileHandler}>
+            저장
+          </SaveButtonText>
         </SaveButton>
         <CancelButton>
           <CancelButtonText>취소</CancelButtonText>
