@@ -12,6 +12,7 @@ import {
   getDocs,
   query,
   where,
+  setIndexConfiguration,
 } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 
@@ -20,11 +21,17 @@ const ProfileEdit = () => {
   const [profileImg, setProfileImg] = useState(
     require('../assets/images/profileImg.png')
   )
+  const [message, setMessage] = useState('')
+  const [saveId, setSaveId] = useState('')
 
   const auth = getAuth()
   const currentUser = auth.currentUser
-  console.log('currentUser.uid:', currentUser.uid)
-  console.log('currentUser.nickname:', currentUser.displayName)
+
+  // const onChangeMessageHandler = (event) => {
+  //   const { value } => event.target;
+  //   setMessage(value)
+  // }
+
   // console.log(currentUser)
 
   // const getProfileRequest = ()
@@ -60,16 +67,49 @@ const ProfileEdit = () => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
         userInfo.push({
-          id: doc.data().id,
-          uid: doc.data().uid,
-          email: doc.data().email,
+          // id: doc.data().id,
+          // uid: doc.data().uid,
+          // email: doc.data().email,
           nickname: doc.data().nickname,
+          mymessage: doc.data().mymessage,
         })
-
         // console.log(userInfo[0].nickname)
         setNickName(userInfo[0].nickname)
+        setSaveId(userInfo[0].id)
+        setMessage(userInfo[0].mymessage)
+        // console.log(userInfo[0].mymessage)
       })
     })
+  }
+
+  const onSaveProfileHandler = async (id) => {
+    // const q = query(
+    //   collection(fireStore, 'users'),
+    //   where('uid', '==', currentUser.uid)
+    // )
+    // await updateDoc(doc(fireStore, 'users', id), {
+    //   nickname: nickName,
+    //   mymessage: message,
+    // })
+
+    // const docRef = doc(fireStore, 'users', id)
+    // console.log(q)
+    // console.log(docRef)
+    try {
+      await updateDoc(doc(fireStore, 'users', id), {
+        nickname: nickName,
+        mymessage: message,
+      })
+      // await updateDoc(q, {
+      //   nickname: nickName,
+      //   mymessage: message,
+      // })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      console.log('수정 완료')
+    }
+    setNickName(nickName)
   }
 
   useEffect(() => {
@@ -103,10 +143,12 @@ const ProfileEdit = () => {
       <IntroduceInput
         placeholder="내용을 입력해주세요."
         multiline={true}
+        onChangeText={setMessage}
+        value={message}
       ></IntroduceInput>
       <ButtonWrap>
         <SaveButton>
-          <SaveButtonText onPress={() => onSaveProfileHandler}>
+          <SaveButtonText onPress={() => onSaveProfileHandler(currentUser.uid)}>
             저장
           </SaveButtonText>
         </SaveButton>
