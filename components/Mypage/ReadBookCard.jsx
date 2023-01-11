@@ -24,12 +24,15 @@ function ReadBookCard({ readId, books }) {
               : readBook[0]?.title}
           </BookTitle>
           <BookAuthor>{readBook[0]?.author}</BookAuthor>
-          <BookPublish>
-            {readBook[0]?.publisher.length > 3
-              ? readBook[0]?.publisher.substring(0, 3) + '..'
-              : readBook[0]?.publisher}{' '}
-            - {readBook[0]?.createdAt}
-          </BookPublish>
+          <BookPublishAndCreatedAtWrap>
+            <BookPublish>
+              {readBook[0]?.publisher.length > 3
+                ? readBook[0]?.publisher.substring(0, 3) + '..'
+                : readBook[0]?.publisher}{' '}
+            </BookPublish>
+            <BookPublish>&#8226;</BookPublish>
+            <BookCreatedAt>{readBook[0]?.createdAt}</BookCreatedAt>
+          </BookPublishAndCreatedAtWrap>
         </BookItemInfo>
       </View>
     </RecordBookInfo>
@@ -44,10 +47,13 @@ const RecordBookInfo = styled.TouchableOpacity`
   /* background-color: lightgrey; */
   padding: 10px;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `
 const BookItemImage = styled.Image`
   width: 100px;
   height: 150px;
+  margin-right: 15px;
 `
 const BookItemInfo = styled.View`
   width: 50%;
@@ -57,11 +63,27 @@ const BookItemInfo = styled.View`
   /* background-color: skyblue; */
 `
 const BookTitle = styled.Text`
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
 `
 const BookAuthor = styled.Text`
-  font-size: 18px;
+  font-size: 15px;
+  margin-right: 8px;
 `
+
+const BookPublishAndCreatedAtWrap = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`
+
 const BookPublish = styled.Text`
-  font-size: 18px;
+  font-size: 15px;
+  margin-right: 8px;
+`
+const BookCreatedAt = styled.Text`
+  font-size: 15px;
+  margin-right: 8px;
 `

@@ -57,8 +57,8 @@ const Mypage = () => {
           readBook: doc.data().readBook,
           bookMark: doc.data().bookmark,
         }
-        // console.log('newBook', myBook.readBook)
-        // console.log('bookMark', myBook.bookMark)
+        console.log('newBook', myBook.readBook.shift())
+        console.log('bookMark', myBook.bookMark.shift())
         setReadBooks(myBook.readBook)
         setMarkBook(myBook.bookMark)
         return myBook
@@ -98,19 +98,17 @@ const Mypage = () => {
         <RecordsTitle>기록</RecordsTitle>
         <RecordsCategory>
           <FilterReded>
-            <FilterRededText onPress={getBookRequest}>
-              내가 읽은 책
-            </FilterRededText>
-            <View style={{ width: '100%' }}>
-              {readBooks.map((item) => (
-                <ReadBookCard readId={item} books={books} key={item} />
-              ))}
-            </View>
+            <FilterRededText>내가 읽은 책</FilterRededText>
           </FilterReded>
           <FilterMarked>
             <FilterMarkedText>내가 보고싶은 책</FilterMarkedText>
           </FilterMarked>
         </RecordsCategory>
+        <ReadBookCardWrap>
+          {readBooks.map((item) => (
+            <ReadBookCard readId={item} books={books} key={item} />
+          ))}
+        </ReadBookCardWrap>
       </MyRecords>
     </ScrollView>
   )
@@ -204,6 +202,7 @@ const FilterReded = styled.TouchableOpacity`
   background-color: #61d2bc;
   width: 50%;
   height: 100%;
+
   /* border-top-left-radius: 5px; */
   /* border-bottom-left-radius: 5px; */
 `
@@ -225,31 +224,37 @@ const FilterMarkedText = styled.Text`
   margin: auto;
 `
 
-const RecordBookInfo = styled.TouchableOpacity`
+const ReadBookCardWrap = styled.View`
   width: 100%;
-  height: 180px;
-  /* background-color: lightgrey; */
-  padding: 10px;
-  justify-content: center;
-`
-const BookItemImage = styled.Image`
-  width: 100px;
-  height: 150px;
-`
-const BookItemInfo = styled.View`
-  width: 50%;
   height: 100%;
-  justify-content: flex-start;
-  padding-top: 10px;
+  /* background-color: red; */
+`
 
-  /* background-color: skyblue; */
-`
-const BookTitle = styled.Text`
-  font-size: 22px;
-`
-const BookAuthor = styled.Text`
-  font-size: 18px;
-`
-const BookPublish = styled.Text`
-  font-size: 18px;
-`
+// const RecordBookInfo = styled.TouchableOpacity`
+//   width: 100%;
+//   height: 180px;
+//   /* background-color: lightgrey; */
+//   padding: 10px;
+//   justify-content: center;
+// `
+// const BookItemImage = styled.Image`
+//   width: 100px;
+//   height: 150px;
+// `
+// const BookItemInfo = styled.View`
+//   width: 50%;
+//   height: 100%;
+//   justify-content: flex-start;
+//   padding-top: 10px;
+
+//   /* background-color: skyblue; */
+// `
+// const BookTitle = styled.Text`
+//   font-size: 22px;
+// `
+// const BookAuthor = styled.Text`
+//   font-size: 18px;
+// `
+// const BookPublish = styled.Text`
+//   font-size: 18px;
+// `
