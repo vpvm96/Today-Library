@@ -1,14 +1,6 @@
-import { View, Text, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { useEffect, useState } from 'react'
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-  doc,
-  getDoc,
-} from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { fireStore } from '../api/firebase'
 import { getAuth } from 'firebase/auth'
 import { Ionicons } from '@expo/vector-icons'
@@ -16,7 +8,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from '@emotion/native'
 import { getBookRequest } from '../api/bookService'
 import ReadBookCard from '../components/Mypage/ReadBookCard'
-// import { getBookRequest } from '../api/bookService'
 import { onAuthStateChanged } from '@firebase/auth'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { authService } from '../api/firebase'
@@ -44,8 +35,6 @@ const Mypage = () => {
           collection(fireStore, 'users'),
           where('uid', '==', currentUser.uid)
         )
-        console.log('user', currentUser.uid)
-
         onSnapshot(q, (snapshot) => {
           const myBooks = snapshot.docs.map((doc) => {
             const myBook = {
@@ -54,8 +43,6 @@ const Mypage = () => {
               readBook: doc.data().readBook,
               bookMark: doc.data().bookmark,
             }
-            console.log('newBook', myBook.readBook.shift())
-            console.log('bookMark', myBook.bookMark.shift())
             setReadBooks(myBook.readBook)
             setMarkBooks(myBook.bookMark)
             return myBook
@@ -191,9 +178,7 @@ const MyIntroduce = styled.Text`
 
 // 읽음 & 찜 책 리스트
 const MyRecords = styled.View`
-  /* flex: 3; */
   height: 100%;
-  /* background-color: green; */
 `
 const RecordsTitle = styled.Text`
   font-size: 22px;
@@ -209,7 +194,6 @@ const SectionLine = styled.View`
 
 const RecordsCategory = styled.View`
   flex-direction: row;
-  /* background-color: yellow; */
   width: 100%;
   height: 60px;
   padding: 10px;
@@ -242,34 +226,4 @@ const FilterMarkedText = styled.Text`
 const ReadBookCardWrap = styled.View`
   width: 100%;
   height: 100%;
-  /* background-color: red; */
 `
-
-// const RecordBookInfo = styled.TouchableOpacity`
-//   width: 100%;
-//   height: 180px;
-//   /* background-color: lightgrey; */
-//   padding: 10px;
-//   justify-content: center;
-// `
-// const BookItemImage = styled.Image`
-//   width: 100px;
-//   height: 150px;
-// `
-// const BookItemInfo = styled.View`
-//   width: 50%;
-//   height: 100%;
-//   justify-content: flex-start;
-//   padding-top: 10px;
-
-//   /* background-color: skyblue; */
-// `
-// const BookTitle = styled.Text`
-//   font-size: 22px;
-// `
-// const BookAuthor = styled.Text`
-//   font-size: 18px;
-// `
-// const BookPublish = styled.Text`
-//   font-size: 18px;
-// `
