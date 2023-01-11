@@ -33,10 +33,11 @@ export default function Login() {
 
   const linkTo = useLinkTo()
   const MoveSignUpPage = () => linkTo('/SignUpPage/SignUp')
+  const MoveHomeHandle = () => linkTo('/Tabs/Tabs')
+  //로그인 여부
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log('onAuthStateChanged user', user)
       if (user) {
         navigation.replace('Tabs')
       }
@@ -103,7 +104,7 @@ export default function Login() {
     <LoginPageBody>
       <LogoImage source={require('../../assets/images/loginLogo.png')} />
       <LoginTextInput
-        placeholder="UserName"
+        placeholder="UserEmail"
         value={email}
         onChangeText={(text) => setEmail(text)}
         ref={emailRef}
@@ -117,7 +118,7 @@ export default function Login() {
           ref={pwRef}
           returnKeyType="send"
           textContentType="password"
-          secureTextEntry={secureText ? true : false}
+          secureTextEntry={secureText ? false : true}
         />
         <TouchIcon onPress={TouchEyeBtn}>
           {touchEye ? (
@@ -131,9 +132,14 @@ export default function Login() {
       <LoginBtn onPress={LogginBtnHandle}>
         <LogginBtnText>Login</LogginBtnText>
       </LoginBtn>
-      <NavigateSignUpPage onPress={MoveSignUpPage}>
-        <LogginBtnText>Sign Up</LogginBtnText>
-      </NavigateSignUpPage>
+      <LinkBody>
+        <NavigateHome onPress={MoveHomeHandle}>
+          <HomeText>Home</HomeText>
+        </NavigateHome>
+        <NavigateSignUpPage onPress={MoveSignUpPage}>
+          <SignUpText>Sign Up</SignUpText>
+        </NavigateSignUpPage>
+      </LinkBody>
     </LoginPageBody>
   )
 }
@@ -147,7 +153,7 @@ const LoginPageBody = styled.View`
   align-items: center;
 `
 const LogoImage = styled.Image`
-  margin-top: 35%;
+  margin-top: 25%;
   margin-bottom: 10%;
 `
 const LoginTextInput = styled.TextInput`
@@ -180,7 +186,9 @@ const PasswordBody = styled.View`
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 `
-const LoginPasswordInput = styled.TextInput``
+const LoginPasswordInput = styled.TextInput`
+  width: 90%;
+`
 const TouchIcon = styled.TouchableOpacity``
 const WarnigText = styled.Text`
   margin-top: 10px;
@@ -197,17 +205,24 @@ const LoginBtn = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `
-
 const LogginBtnText = styled.Text`
   color: white;
+  font-size: 16px;
   font-weight: 500;
 `
-const NavigateSignUpPage = styled.TouchableOpacity`
-  width: 70%;
-  height: 40px;
-  border-radius: 5px;
-  background-color: rgb(89, 167, 147);
-
-  align-items: center;
-  justify-content: center;
+const LinkBody = styled.View`
+  width: 45%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `
+const NavigateHome = styled.TouchableOpacity``
+const HomeText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+`
+const SignUpText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+`
+const NavigateSignUpPage = styled.TouchableOpacity``

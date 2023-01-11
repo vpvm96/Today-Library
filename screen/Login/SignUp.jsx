@@ -21,10 +21,11 @@ export default function SignUp() {
   const [secureText, setSecureText] = useState(null)
   const [touchEye, setTouchEye] = useState(true)
   const [warningText, setWarningText] = useState('')
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
 
   const auth = getAuth()
   const dbService = getFirestore()
+
   // password 아이콘 스위치 기능
   const TouchEyeBtn = () => {
     setTouchEye((prev) => !prev)
@@ -35,17 +36,6 @@ export default function SignUp() {
     }
   }
 
-  // 로그인 되어있으면 페이지 이동
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      // console.log('onAuthStateChanged user', user);
-      if (user) {
-        navigation.replace('Tabs')
-      }
-    })
-  }, [])
-
-  // 유효성 검사
   const validateInputs = () => {
     if (!email) {
       setWarningText('email을 입력해주세요.')
@@ -101,6 +91,8 @@ export default function SignUp() {
         console.log('회원가입성공')
         setEmail('')
         setPassword('')
+        setCheckPassword('')
+        setNickname('')
       })
       .catch((err) => {
         console.log('err.message:', err.message)
@@ -116,7 +108,7 @@ export default function SignUp() {
     <SignUpPageBody>
       <SignUpImage source={require('../../assets/images/loginLogo.png')} />
       <SignUpTextInput
-        placeholder="UserName"
+        placeholder="UserEmail"
         value={email}
         onChangeText={(text) => setEmail(text)}
         ref={emailRef}
@@ -158,7 +150,7 @@ export default function SignUp() {
         <SignBtnText>Sign Up</SignBtnText>
       </SignUpBtn>
       <NavigateLoginPage onPress={MoveLoginHandle}>
-        <LoginText>Login...</LoginText>
+        <LoginText>Login</LoginText>
       </NavigateLoginPage>
     </SignUpPageBody>
   )
@@ -173,7 +165,7 @@ const SignUpPageBody = styled.View`
   align-items: center;
 `
 const SignUpImage = styled.Image`
-  margin-top: 25%;
+  margin-top: 20%;
   margin-bottom: 10%;
 `
 const SignUpTextInput = styled.TextInput`
@@ -205,7 +197,9 @@ const PasswordBody = styled.View`
   border-radius: 10px;
   background-color: rgb(247, 244, 244);
 `
-const LoginPasswordInput = styled.TextInput``
+const LoginPasswordInput = styled.TextInput`
+  width: 90%;
+00`
 const TouchIcon = styled.TouchableOpacity``
 
 const SignUpNicknameTextInput = styled.TextInput`
@@ -240,7 +234,11 @@ const SignUpBtn = styled.TouchableOpacity`
 `
 const SignBtnText = styled.Text`
   color: white;
+  font-size: 16px;
   font-weight: 500;
 `
 const NavigateLoginPage = styled.TouchableOpacity``
-const LoginText = styled.Text``
+const LoginText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+`

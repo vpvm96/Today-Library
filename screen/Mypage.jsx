@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from '@emotion/native'
+import { onAuthStateChanged } from '@firebase/auth'
+import { useIsFocused, useNavigation } from '@react-navigation/core'
+import { authService } from '../api/firebase'
 
 const Mypage = () => {
+  // 로그인 여부
+  const navigation = useNavigation()
+  const IsFocused = useIsFocused()
+
+  useEffect(() => {
+    onAuthStateChanged(authService, (user) => {
+      if (!user) {
+        navigation.replace('LoginPage')
+      }
+    })
+  }, [IsFocused])
   return (
     <ScrollView>
       {/* 프로필 영역 */}
