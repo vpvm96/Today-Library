@@ -18,10 +18,17 @@ function ReadBookCard({ readId, books }) {
       >
         <BookItemImage source={{ uri: readBook[0]?.imgUrl }}></BookItemImage>
         <BookItemInfo>
-          <BookTitle>{readBook[0]?.title}</BookTitle>
+          <BookTitle>
+            {readBook[0]?.title.length > 6
+              ? readBook[0]?.title.substring(0, 6) + '..'
+              : readBook[0]?.title}
+          </BookTitle>
           <BookAuthor>{readBook[0]?.author}</BookAuthor>
           <BookPublish>
-            {readBook[0]?.publisher} - {readBook[0]?.createdAt}
+            {readBook[0]?.publisher.length > 3
+              ? readBook[0]?.publisher.substring(0, 3) + '..'
+              : readBook[0]?.publisher}{' '}
+            - {readBook[0]?.createdAt}
           </BookPublish>
         </BookItemInfo>
       </View>

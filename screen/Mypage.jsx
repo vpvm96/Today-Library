@@ -47,15 +47,12 @@ const Mypage = () => {
     const q = query(
       collection(fireStore, 'users'),
       where('uid', '==', currentUser.uid)
-
-      // orderBy('createdAt', 'desc')
     )
 
     onSnapshot(q, (snapshot) => {
       const myBooks = snapshot.docs.map((doc) => {
         const myBook = {
           id: doc.id,
-          // ...doc.data(), // doc.data() : { text, createdAt, ...  }
           email: doc.data().email,
           readBook: doc.data().readBook,
           bookMark: doc.data().bookmark,
@@ -70,8 +67,6 @@ const Mypage = () => {
     // 책 정보 전체 가져오기
     getBookRequest(setBooks)
   }, [])
-
-  // console.log(books)
 
   return (
     <ScrollView>
