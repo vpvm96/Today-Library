@@ -55,8 +55,6 @@ const Mypage = () => {
     })
   }, [IsFocused])
 
-=======
->>>>>>> 7bce29302b4b77a8f9533beb95a6e97cc1fb468a
   return (
     <ScrollView>
       {/* 프로필 영역 */}
