@@ -15,20 +15,29 @@ import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
 import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
 
 const Home = () => {
-  // const [books, setBooks] = useState([])
-  // const [recommendBooks, setRecommendBooks] = useState([])
+  const [recommendBooks, setRecommendBooks] = useState([])
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
 
-  const queryClinet = useQueryClient()
+  // const queryClinet = useQueryClient()
 
   // useQeury
   const {
     data: bookRequestData,
     isLoading: isLoadingBR,
     refetch: refetchBR,
-  } = useQuery('BookRequest', getMainBookRequest)
+  } = useQuery('BookRequest', getMainBookRequest, {
+    onSuccess: (data) => {
+      const randomBooks = []
+      for (let i = 0; i < 6; i++) {
+        let randomNum = Math.floor(Math.random() * data.length)
+        randomBooks.push(data[randomNum])
+        data.splice(randomNum, 1)
+      }
+      setRecommendBooks(randomBooks)
+    },
+  })
 
   const onRefresh = async () => {
     setIsRefreshing(true)
@@ -46,25 +55,11 @@ const Home = () => {
     )
   }
 
-  // const randomBooksfunc = () => {
-  //   const randomBooks = []
-
-  //   for (let i = 0; i < 5; i++) {
-  //     let randomNum = Math.floor(Math.random() * books.length)
-  //     randomBooks.push(books[randomNum])
-  //   }
-  //   setRecommendBooks(randomBooks)
-  // }
-
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
   const onSubmitHandler = () => {
     if (text === '')
       return Alert.alert('알림', '도서명을 입력해주세요.', [{ text: '확인' }])
   }
-
-  // useEffect(() => {
-  //   getBookRequest(setBooks)
-  // }, [])
 
   return (
     <>
@@ -110,7 +105,7 @@ const Home = () => {
         <FlatList
           refreshing={isRefreshing}
           onRefresh={onRefresh}
-          data={bookRequestData.results}
+          data={recommendBooks}
           renderItem={({ item }) => <RecommendBookItem recbook={item} />}
           keyExtractor={(item) => item.id}
         />
