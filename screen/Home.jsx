@@ -11,7 +11,6 @@ import styled from '@emotion/native'
 import { Feather } from '@expo/vector-icons'
 import { getMainBookRequest } from '../api/mainBookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
-import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
 import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
 
 const Home = () => {
@@ -106,7 +105,7 @@ const Home = () => {
           refreshing={isRefreshing}
           onRefresh={onRefresh}
           data={recommendBooks}
-          renderItem={({ item }) => <RecommendBookItem recbook={item} />}
+          renderItem={({ item }) => <NewBookItem book={item} />}
           keyExtractor={(item) => item.id}
         />
       )}
