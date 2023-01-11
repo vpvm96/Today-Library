@@ -8,18 +8,20 @@ const useInput = (initialValue) => {
     setValue(value)
   }, [])
 
-  const onClickHandler = (rating) => {
+  const onClickHandler = (rating, bookId, user) => {
     const reviewObj = {
-      nickname: '',
+      nickname: user.nickname,
       content: value,
       rating,
-      userId: '',
+      userId: user.uid,
+      bookId,
       createdAt: Date.now(),
     }
     createReview(reviewObj)
+    setValue('')
   }
 
-  return [value, onChageHandler, onClickHandler]
+  return [value, setValue, onChageHandler, onClickHandler]
 }
 
 export default useInput

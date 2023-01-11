@@ -1,7 +1,7 @@
 import styled from '@emotion/native'
 
 const BookDetailComment = ({ review }) => {
-  const { nickname, content, rating } = review
+  const { nickname, content } = review
   return (
     <DetailCommentWrap>
       <DetailCommentBox>
@@ -28,6 +28,7 @@ const DetailCommentBox = styled.View`
   padding: 15px;
   border-radius: 10px;
   border: 1px solid #c6c6c6;
+  margin-top: 5px;
 `
 const DetailCommentNickName = styled.Text`
   font-size: 20px;
