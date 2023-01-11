@@ -96,6 +96,8 @@ const ProfileEdit = () => {
       console.log('url', url)
       setProfileImgUrl(url)
       // setProfileImg(url)
+      console.log('profileImgUrl', profileImgUrl)
+      onSaveProfileHandler(currentUser.uid)
       return url
     } catch (err) {
       // return Promise.reject(err)
@@ -118,7 +120,7 @@ const ProfileEdit = () => {
       console.log('수정 완료', profileImg)
     }
     setNickName(nickName)
-    uploadImage(profileImg)
+    // uploadImage(profileImg)
   }
 
   useEffect(() => {
@@ -158,7 +160,8 @@ const ProfileEdit = () => {
       ></IntroduceInput>
       <ButtonWrap>
         <SaveButton>
-          <SaveButtonText onPress={() => onSaveProfileHandler(currentUser.uid)}>
+          {/* <SaveButtonText onPress={() => onSaveProfileHandler(currentUser.uid)}> */}
+          <SaveButtonText onPress={() => uploadImage(profileImg)}>
             저장
           </SaveButtonText>
         </SaveButton>

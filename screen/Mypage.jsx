@@ -59,8 +59,7 @@ const Mypage = () => {
           readBook: doc.data().readBook,
           bookMark: doc.data().bookmark,
         }
-        console.log('newBook', myBook.readBook.shift())
-        console.log('bookMark', myBook.bookMark.shift())
+
         setReadBooks(myBook.readBook)
         setMarkBooks(myBook.bookMark)
         return myBook
