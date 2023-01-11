@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
-import { useLinkTo, useNavigation } from '@react-navigation/native'
+import { useLinkTo } from '@react-navigation/native'
 import styled from '@emotion/native'
 import { emailRegex, pwRegex } from '../../utils'
 import { Ionicons } from '@expo/vector-icons'
@@ -17,7 +17,6 @@ export default function SignUp() {
   const [secureText, setSecureText] = useState(null)
   const [touchEye, setTouchEye] = useState(true)
   const [warningText, setWarningText] = useState('')
-  // const navigation = useNavigation()
 
   const auth = getAuth()
   const dbService = getFirestore()
@@ -45,6 +44,10 @@ export default function SignUp() {
     }
     if (checkPassword !== password) {
       setWarningText('password를 확인해주세요.')
+      return true
+    }
+    if (nickname === '') {
+      setWarningText('닉네임을 입력해주세요.')
       return true
     }
     const matchedEmail = email.match(emailRegex)
@@ -80,8 +83,9 @@ export default function SignUp() {
           email: email,
           password: password,
           nickname: nickname,
-          bookmark: [''],
-          readBook: [''],
+          bookmark: [],
+          readBook: [],
+          mymessage: '',
           profileImg: '',
         })
         console.log('회원가입성공')
@@ -195,7 +199,7 @@ const PasswordBody = styled.View`
 `
 const LoginPasswordInput = styled.TextInput`
   width: 90%;
-00`
+`
 const TouchIcon = styled.TouchableOpacity``
 
 const SignUpNicknameTextInput = styled.TextInput`

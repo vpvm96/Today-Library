@@ -188,7 +188,7 @@ const BookDetailCommentContainer = styled.ScrollView`
 `
 const BookDetailCommentBtnContainer = styled.View`
   width: 100%;
-  margin-top: 20px;
+  margin: 20px 0 60px 0;
   display: flex;
   flex-direction: row;
   align-items: center;
