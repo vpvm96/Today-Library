@@ -1,51 +1,64 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, View, Text, TouchableOpacity, FlatList } from 'react-native'
+import {
+  Alert,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native'
 import styled from '@emotion/native'
 import { Feather } from '@expo/vector-icons'
-import { getBookRequest } from '../api/bookService'
+import { getMainBookRequest } from '../api/mainBookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
-import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
-
-//예비용 데이터
-const obj = [
-  {
-    id: '1',
-    title: '제목1',
-    writer: '저자1',
-    publisher: '출판1',
-    year: 2005,
-  },
-  {
-    id: '2',
-    title: '제목2',
-    writer: '저자2',
-    publisher: '출판2',
-    year: 2002,
-  },
-  {
-    id: '3',
-    title: '제목3',
-    writer: '저자3',
-    publisher: '출판3',
-    year: 2003,
-  },
-]
+import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
 
 const Home = () => {
-  // const [data, setData] = useState([obj])
-  const [books, setBooks] = useState([])
+  const [recommendBooks, setRecommendBooks] = useState([])
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
+
+  // const queryClinet = useQueryClient()
+
+  // useQeury
+  const {
+    data: bookRequestData,
+    isLoading: isLoadingBR,
+    refetch: refetchBR,
+  } = useQuery('BookRequest', getMainBookRequest, {
+    onSuccess: (data) => {
+      const randomBooks = []
+      for (let i = 0; i < 6; i++) {
+        let randomNum = Math.floor(Math.random() * data.length)
+        randomBooks.push(data[randomNum])
+        data.splice(randomNum, 1)
+      }
+      setRecommendBooks(randomBooks)
+    },
+  })
+
+  const onRefresh = async () => {
+    setIsRefreshing(true)
+    await refetchBR()
+    setIsRefreshing(false)
+  }
+
+  const isLoading = isLoadingBR
+
+  if (isLoading) {
+    return (
+      <StyleLoader>
+        <ActivityIndicator />
+      </StyleLoader>
+    )
+  }
 
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
   const onSubmitHandler = () => {
     if (text === '')
       return Alert.alert('알림', '도서명을 입력해주세요.', [{ text: '확인' }])
   }
-
-  useEffect(() => {
-    getBookRequest(setBooks)
-  }, [])
 
   return (
     <>
@@ -81,14 +94,18 @@ const Home = () => {
       {/* flatlist 영역 */}
       {category === 'newbook' ? (
         <FlatList
-          data={books}
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          data={bookRequestData}
           renderItem={({ item }) => <NewBookItem book={item} />}
           keyExtractor={(item) => item.id}
         />
       ) : (
         <FlatList
-          data={obj}
-          renderItem={({ item }) => <RecommendBookItem item={item} />}
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          data={recommendBooks}
+          renderItem={({ item }) => <NewBookItem book={item} />}
           keyExtractor={(item) => item.id}
         />
       )}
@@ -151,6 +168,10 @@ const StyleCategoryText = styled.Text`
   font-weight: 700;
 `
 
-// flatlist 영역
+const StyleLoader = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
 
 export default Home

@@ -8,11 +8,34 @@ import { FontAwesome } from '@expo/vector-icons'
 import { Image, TouchableOpacity, View, Text } from 'react-native'
 import ProfileEdit from '../screen/ProfileEdit'
 import Subs from './Subs'
-import Login from '../screen/Login/Login'
+import { useNavigation } from '@react-navigation/core'
+import { useEffect, useState } from 'react'
+import { onAuthStateChanged } from '@firebase/auth'
+import { authService } from '../api/firebase'
 
 const Tab = createBottomTabNavigator()
 
 const Tabs = ({ navigation }) => {
+  const [logoutText, setLogoutText] = useState(true)
+  const navigate = useNavigation()
+
+  useEffect(() => {
+    onAuthStateChanged(authService, (user) => {
+      if (user) {
+        setLogoutText(false)
+      } else if (!user) {
+        setLogoutText(true)
+      }
+    })
+  }, [])
+  const NavLogoutHandler = () => {
+    if (logoutText === false) {
+      authService.signOut()
+    } else {
+      navigate.replace('LoginPage')
+    }
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home" // 처음 랜더링시 Home 화면 보여줌
@@ -24,6 +47,11 @@ const Tabs = ({ navigation }) => {
           backgroundColor: '#61D2BC',
         },
         tabBarActiveTintColor: '#fff',
+        headerRight: () => (
+          <LogoutText onPress={NavLogoutHandler}>
+            <Text>{logoutText ? '로그인' : '로그아웃'}</Text>
+          </LogoutText>
+        ),
       }}
     >
       <Tab.Screen
@@ -49,7 +77,6 @@ const Tabs = ({ navigation }) => {
         name="Mypage"
         component={Mypage}
       />
-      <Tab.Screen name="LoginPage" component={Login} />
     </Tab.Navigator>
   )
 }
@@ -62,4 +89,8 @@ const LogoImage = styled.Image`
 `
 const SettingIcon = styled.TouchableOpacity`
   margin-right: 20px;
+`
+const LogoutText = styled.TouchableOpacity`
+  margin-right: 20px;
+  margin-top: 15px;
 `

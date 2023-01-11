@@ -17,6 +17,9 @@ import styled from '@emotion/native'
 import { getBookRequest } from '../api/bookService'
 import ReadBookCard from '../components/Mypage/ReadBookCard'
 // import { getBookRequest } from '../api/bookService'
+import { onAuthStateChanged } from '@firebase/auth'
+import { useIsFocused, useNavigation } from '@react-navigation/core'
+import { authService } from '../api/firebase'
 
 const Mypage = () => {
   const [readBooks, setReadBooks] = useState([])
@@ -25,6 +28,18 @@ const Mypage = () => {
 
   const auth = getAuth()
   const currentUser = auth.currentUser
+
+  // 로그인 여부
+  const navigation = useNavigation()
+  const IsFocused = useIsFocused()
+
+  useEffect(() => {
+    onAuthStateChanged(authService, (user) => {
+      if (!user) {
+        navigation.replace('LoginPage')
+      }
+    })
+  }, [IsFocused])
 
   // user 정보로부터 책 정보 가져오기
   useEffect(() => {
