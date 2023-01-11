@@ -36,17 +36,6 @@ export default function SignUp() {
     }
   }
 
-  // 로그인 되어있으면 페이지 이동
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     console.log('onAuthStateChanged', user.uid)
-  //     if (user) {
-  //       navigation.replace('Tabs')
-  //     }
-  //   })
-  // }, [])
-
-  // 유효성 검사
   const validateInputs = () => {
     if (!email) {
       setWarningText('email을 입력해주세요.')
