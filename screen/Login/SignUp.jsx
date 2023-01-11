@@ -47,6 +47,10 @@ export default function SignUp() {
       setWarningText('password를 확인해주세요.')
       return true
     }
+    if (nickname === '') {
+      setWarningText('닉네임을 입력해주세요.')
+      return true
+    }
     const matchedEmail = email.match(emailRegex)
     const matchedPw = password.match(pwRegex)
 
