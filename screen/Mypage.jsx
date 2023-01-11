@@ -1,13 +1,34 @@
-import React, { useEffect } from 'react'
 import { View, Text, ScrollView } from 'react-native'
+import { useEffect, useState } from 'react'
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+  doc,
+  getDoc,
+} from 'firebase/firestore'
+import { fireStore } from '../api/firebase'
+import { getAuth } from 'firebase/auth'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import styled from '@emotion/native'
+import { getBookRequest } from '../api/bookService'
+import ReadBookCard from '../components/Mypage/ReadBookCard'
+// import { getBookRequest } from '../api/bookService'
 import { onAuthStateChanged } from '@firebase/auth'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { authService } from '../api/firebase'
 
 const Mypage = () => {
+  const [readBooks, setReadBooks] = useState([])
+  const [markBook, setMarkBook] = useState([])
+  const [books, setBooks] = useState([])
+
+  const auth = getAuth()
+  const currentUser = auth.currentUser
+
   // 로그인 여부
   const navigation = useNavigation()
   const IsFocused = useIsFocused()
@@ -19,6 +40,39 @@ const Mypage = () => {
       }
     })
   }, [IsFocused])
+
+  // user 정보로부터 책 정보 가져오기
+  useEffect(() => {
+    // 로그인 유저의 정보 가져오기
+    const q = query(
+      collection(fireStore, 'users'),
+      where('uid', '==', currentUser.uid)
+
+      // orderBy('createdAt', 'desc')
+    )
+
+    onSnapshot(q, (snapshot) => {
+      const myBooks = snapshot.docs.map((doc) => {
+        const myBook = {
+          id: doc.id,
+          // ...doc.data(), // doc.data() : { text, createdAt, ...  }
+          email: doc.data().email,
+          readBook: doc.data().readBook,
+          bookMark: doc.data().bookmark,
+        }
+        // console.log('newBook', myBook.readBook)
+        // console.log('bookMark', myBook.bookMark)
+        setReadBooks(myBook.readBook)
+        setMarkBook(myBook.bookMark)
+        return myBook
+      })
+    })
+    // 책 정보 전체 가져오기
+    getBookRequest(setBooks)
+  }, [])
+
+  // console.log(books)
+
   return (
     <ScrollView>
       {/* 프로필 영역 */}
@@ -49,30 +103,19 @@ const Mypage = () => {
         <RecordsTitle>기록</RecordsTitle>
         <RecordsCategory>
           <FilterReded>
-            <FilterRededText>내가 읽은 책</FilterRededText>
+            <FilterRededText onPress={getBookRequest}>
+              내가 읽은 책
+            </FilterRededText>
+            <View style={{ width: '100%' }}>
+              {readBooks.map((item) => (
+                <ReadBookCard readId={item} books={books} key={item} />
+              ))}
+            </View>
           </FilterReded>
           <FilterMarked>
             <FilterMarkedText>내가 보고싶은 책</FilterMarkedText>
           </FilterMarked>
         </RecordsCategory>
-        <RecordBookInfo>
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}
-          >
-            <BookItemImage
-              source={require('../assets/images/testBook.jpeg')}
-            ></BookItemImage>
-            <BookItemInfo>
-              <BookTitle>책 제목</BookTitle>
-              <BookAuthor>저자명</BookAuthor>
-              <BookPublish>출판사 - 출판연도</BookPublish>
-            </BookItemInfo>
-          </View>
-        </RecordBookInfo>
       </MyRecords>
     </ScrollView>
   )
