@@ -20,11 +20,13 @@ import ReadBookCard from '../components/Mypage/ReadBookCard'
 import { onAuthStateChanged } from '@firebase/auth'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { authService } from '../api/firebase'
+import MarkBookCard from '../components/Mypage/MarkBookCard'
 
 const Mypage = () => {
   const [readBooks, setReadBooks] = useState([])
-  const [markBook, setMarkBook] = useState([])
+  const [markBooks, setMarkBooks] = useState([])
   const [books, setBooks] = useState([])
+  const [category, setCategory] = useState('newbook')
 
   const auth = getAuth()
   const currentUser = auth.currentUser
@@ -47,31 +49,26 @@ const Mypage = () => {
     const q = query(
       collection(fireStore, 'users'),
       where('uid', '==', currentUser.uid)
-
-      // orderBy('createdAt', 'desc')
     )
 
     onSnapshot(q, (snapshot) => {
       const myBooks = snapshot.docs.map((doc) => {
         const myBook = {
           id: doc.id,
-          // ...doc.data(), // doc.data() : { text, createdAt, ...  }
           email: doc.data().email,
           readBook: doc.data().readBook,
           bookMark: doc.data().bookmark,
         }
-        // console.log('newBook', myBook.readBook)
-        // console.log('bookMark', myBook.bookMark)
+        console.log('newBook', myBook.readBook.shift())
+        console.log('bookMark', myBook.bookMark.shift())
         setReadBooks(myBook.readBook)
-        setMarkBook(myBook.bookMark)
+        setMarkBooks(myBook.bookMark)
         return myBook
       })
     })
     // 책 정보 전체 가져오기
     getBookRequest(setBooks)
   }, [])
-
-  // console.log(books)
 
   return (
     <ScrollView>
@@ -101,21 +98,35 @@ const Mypage = () => {
       <MyRecords>
         <SectionLine></SectionLine>
         <RecordsTitle>기록</RecordsTitle>
+        {/* 카테고리 버튼 */}
         <RecordsCategory>
-          <FilterReded>
-            <FilterRededText onPress={getBookRequest}>
-              내가 읽은 책
-            </FilterRededText>
-            <View style={{ width: '100%' }}>
-              {readBooks.map((item) => (
-                <ReadBookCard readId={item} books={books} key={item} />
-              ))}
-            </View>
-          </FilterReded>
-          <FilterMarked>
+          <FilterReaded
+            category={category}
+            onPress={() => setCategory('readed')}
+          >
+            <FilterRededText>내가 읽은 책</FilterRededText>
+          </FilterReaded>
+          <FilterMarked
+            category={category}
+            onPress={() => setCategory('marked')}
+          >
             <FilterMarkedText>내가 보고싶은 책</FilterMarkedText>
           </FilterMarked>
         </RecordsCategory>
+        {/* 책 리스트 영역 */}
+        {category === 'readed' ? (
+          <ReadBookCardWrap>
+            {readBooks.map((item) => (
+              <ReadBookCard readId={item} books={books} key={item} />
+            ))}
+          </ReadBookCardWrap>
+        ) : (
+          <ReadBookCardWrap>
+            {markBooks.map((item) => (
+              <MarkBookCard readId={item} books={books} key={item} />
+            ))}
+          </ReadBookCardWrap>
+        )}
       </MyRecords>
     </ScrollView>
   )
@@ -205,24 +216,24 @@ const RecordsCategory = styled.View`
   height: 60px;
   padding: 10px;
 `
-const FilterReded = styled.TouchableOpacity`
-  background-color: #61d2bc;
+const FilterReaded = styled.TouchableOpacity`
+  background-color: ${({ category }) =>
+    category === 'readed' ? '#61d2bc' : 'lightgrey'};
   width: 50%;
   height: 100%;
-  /* border-top-left-radius: 5px; */
-  /* border-bottom-left-radius: 5px; */
+  border-radius: 5px 0 0 5px;
 `
 const FilterRededText = styled.Text`
   font-size: 18px;
-  color: white;
+  color: #222222;
   margin: auto;
 `
 const FilterMarked = styled.TouchableOpacity`
-  background-color: lightgrey;
+  background-color: ${({ category }) =>
+    category === 'marked' ? '#61d2bc' : 'lightgrey'};
   width: 50%;
   height: 100%;
-  /* border-top-right-radius: 5px; */
-  /* border-bottom-right-radius: 5px; */
+  border-radius: 0 5px 5px 0;
 `
 const FilterMarkedText = styled.Text`
   font-size: 18px;
@@ -230,31 +241,37 @@ const FilterMarkedText = styled.Text`
   margin: auto;
 `
 
-const RecordBookInfo = styled.TouchableOpacity`
+const ReadBookCardWrap = styled.View`
   width: 100%;
-  height: 180px;
-  /* background-color: lightgrey; */
-  padding: 10px;
-  justify-content: center;
-`
-const BookItemImage = styled.Image`
-  width: 100px;
-  height: 150px;
-`
-const BookItemInfo = styled.View`
-  width: 50%;
   height: 100%;
-  justify-content: flex-start;
-  padding-top: 10px;
+  /* background-color: red; */
+`
 
-  /* background-color: skyblue; */
-`
-const BookTitle = styled.Text`
-  font-size: 22px;
-`
-const BookAuthor = styled.Text`
-  font-size: 18px;
-`
-const BookPublish = styled.Text`
-  font-size: 18px;
-`
+// const RecordBookInfo = styled.TouchableOpacity`
+//   width: 100%;
+//   height: 180px;
+//   /* background-color: lightgrey; */
+//   padding: 10px;
+//   justify-content: center;
+// `
+// const BookItemImage = styled.Image`
+//   width: 100px;
+//   height: 150px;
+// `
+// const BookItemInfo = styled.View`
+//   width: 50%;
+//   height: 100%;
+//   justify-content: flex-start;
+//   padding-top: 10px;
+
+//   /* background-color: skyblue; */
+// `
+// const BookTitle = styled.Text`
+//   font-size: 22px;
+// `
+// const BookAuthor = styled.Text`
+//   font-size: 18px;
+// `
+// const BookPublish = styled.Text`
+//   font-size: 18px;
+// `
