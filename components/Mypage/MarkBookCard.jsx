@@ -2,8 +2,8 @@ import React from 'react'
 import styled from '@emotion/native'
 import { View, Text, ScrollView } from 'react-native'
 
-const ReadBookCard = ({ readId, books }) => {
-  const readBook = books.filter((book) => book.id === readId)
+const MarkBookCard = ({ readId, books }) => {
+  const markBook = books.filter((book) => book.id === readId)
 
   // console.log('readBook', readBook[0])
 
@@ -16,22 +16,22 @@ const ReadBookCard = ({ readId, books }) => {
           justifyContent: 'space-around',
         }}
       >
-        <BookItemImage source={{ uri: readBook[0]?.imgUrl }}></BookItemImage>
+        <BookItemImage source={{ uri: markBook[0]?.imgUrl }}></BookItemImage>
         <BookItemInfo>
           <BookTitle>
-            {readBook[0]?.title.length > 6
-              ? readBook[0]?.title.substring(0, 6) + '..'
-              : readBook[0]?.title}
+            {markBook[0]?.title.length > 6
+              ? markBook[0]?.title.substring(0, 6) + '..'
+              : markBook[0]?.title}
           </BookTitle>
-          <BookAuthor>{readBook[0]?.author}</BookAuthor>
+          <BookAuthor>{markBook[0]?.author}</BookAuthor>
           <BookPublishAndCreatedAtWrap>
             <BookPublish>
-              {readBook[0]?.publisher.length > 3
-                ? readBook[0]?.publisher.substring(0, 3) + '..'
-                : readBook[0]?.publisher}{' '}
+              {markBook[0]?.publisher.length > 3
+                ? markBook[0]?.publisher.substring(0, 3) + '..'
+                : markBook[0]?.publisher}{' '}
             </BookPublish>
             <BookPublish>&#8226;</BookPublish>
-            <BookCreatedAt>{readBook[0]?.createdAt}</BookCreatedAt>
+            <BookCreatedAt>{markBook[0]?.createdAt}</BookCreatedAt>
           </BookPublishAndCreatedAtWrap>
         </BookItemInfo>
       </View>
@@ -39,7 +39,7 @@ const ReadBookCard = ({ readId, books }) => {
   )
 }
 
-export default ReadBookCard
+export default MarkBookCard
 
 const RecordBookInfo = styled.TouchableOpacity`
   width: 100%;

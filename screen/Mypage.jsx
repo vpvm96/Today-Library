@@ -20,11 +20,13 @@ import ReadBookCard from '../components/Mypage/ReadBookCard'
 import { onAuthStateChanged } from '@firebase/auth'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { authService } from '../api/firebase'
+import MarkBookCard from '../components/Mypage/MarkBookCard'
 
 const Mypage = () => {
   const [readBooks, setReadBooks] = useState([])
-  const [markBook, setMarkBook] = useState([])
+  const [markBooks, setMarkBooks] = useState([])
   const [books, setBooks] = useState([])
+  const [category, setCategory] = useState('newbook')
 
   const auth = getAuth()
   const currentUser = auth.currentUser
@@ -60,7 +62,7 @@ const Mypage = () => {
         console.log('newBook', myBook.readBook.shift())
         console.log('bookMark', myBook.bookMark.shift())
         setReadBooks(myBook.readBook)
-        setMarkBook(myBook.bookMark)
+        setMarkBooks(myBook.bookMark)
         return myBook
       })
     })
@@ -96,19 +98,35 @@ const Mypage = () => {
       <MyRecords>
         <SectionLine></SectionLine>
         <RecordsTitle>기록</RecordsTitle>
+        {/* 카테고리 버튼 */}
         <RecordsCategory>
-          <FilterReded>
+          <FilterReaded
+            category={category}
+            onPress={() => setCategory('readed')}
+          >
             <FilterRededText>내가 읽은 책</FilterRededText>
-          </FilterReded>
-          <FilterMarked>
+          </FilterReaded>
+          <FilterMarked
+            category={category}
+            onPress={() => setCategory('marked')}
+          >
             <FilterMarkedText>내가 보고싶은 책</FilterMarkedText>
           </FilterMarked>
         </RecordsCategory>
-        <ReadBookCardWrap>
-          {readBooks.map((item) => (
-            <ReadBookCard readId={item} books={books} key={item} />
-          ))}
-        </ReadBookCardWrap>
+        {/* 책 리스트 영역 */}
+        {category === 'readed' ? (
+          <ReadBookCardWrap>
+            {readBooks.map((item) => (
+              <ReadBookCard readId={item} books={books} key={item} />
+            ))}
+          </ReadBookCardWrap>
+        ) : (
+          <ReadBookCardWrap>
+            {markBooks.map((item) => (
+              <MarkBookCard readId={item} books={books} key={item} />
+            ))}
+          </ReadBookCardWrap>
+        )}
       </MyRecords>
     </ScrollView>
   )
@@ -198,25 +216,24 @@ const RecordsCategory = styled.View`
   height: 60px;
   padding: 10px;
 `
-const FilterReded = styled.TouchableOpacity`
-  background-color: #61d2bc;
+const FilterReaded = styled.TouchableOpacity`
+  background-color: ${({ category }) =>
+    category === 'readed' ? '#61d2bc' : 'lightgrey'};
   width: 50%;
   height: 100%;
-
-  /* border-top-left-radius: 5px; */
-  /* border-bottom-left-radius: 5px; */
+  border-radius: 5px 0 0 5px;
 `
 const FilterRededText = styled.Text`
   font-size: 18px;
-  color: white;
+  color: #222222;
   margin: auto;
 `
 const FilterMarked = styled.TouchableOpacity`
-  background-color: lightgrey;
+  background-color: ${({ category }) =>
+    category === 'marked' ? '#61d2bc' : 'lightgrey'};
   width: 50%;
   height: 100%;
-  /* border-top-right-radius: 5px; */
-  /* border-bottom-right-radius: 5px; */
+  border-radius: 0 5px 5px 0;
 `
 const FilterMarkedText = styled.Text`
   font-size: 18px;
