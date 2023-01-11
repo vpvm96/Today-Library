@@ -46,7 +46,7 @@ const ProfileEdit = () => {
     if (result.assets !== null) {
       setProfileImg(result.assets)
       // setProfileImgUrl(result.assets)
-      uploadImage(profileImg)
+      // uploadImage(profileImg)
     } else {
       setProfileImg(require('../assets/images/profileImg.png'))
     }
@@ -105,13 +105,12 @@ const ProfileEdit = () => {
 
   // 프로필 변경 내용 FB 저장
   const onSaveProfileHandler = async (id) => {
-    // uploadImage(profileImg)
-    const url = uploadImage(profileImgUrl)
+    // const url = uploadImage(profileImgUrl)
     try {
       await updateDoc(doc(fireStore, 'users', id), {
         nickname: nickName,
         mymessage: message,
-        profileImg: url,
+        profileImg: profileImgUrl,
       })
     } catch (err) {
       console.log(err)
@@ -119,6 +118,7 @@ const ProfileEdit = () => {
       console.log('수정 완료', profileImg)
     }
     setNickName(nickName)
+    uploadImage(profileImg)
   }
 
   useEffect(() => {
