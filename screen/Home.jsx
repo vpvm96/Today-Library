@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Alert,
   View,
@@ -6,18 +6,22 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native'
 import styled from '@emotion/native'
 import { Feather } from '@expo/vector-icons'
-import { getMainBookRequest } from '../api/mainBookService'
+import { getMainBookRequest, getInfiniteData } from '../api/mainBookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
 import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
+import { EvilIcons } from '@expo/vector-icons'
 
 const Home = () => {
   const [recommendBooks, setRecommendBooks] = useState([])
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
+  const [scrollVertical, setScrollVertical] = useState(0)
+  const CONTENT_OFFSET_THRESHOLD = 100
 
   // const queryClinet = useQueryClient()
 
@@ -52,6 +56,12 @@ const Home = () => {
         <ActivityIndicator />
       </StyleLoader>
     )
+  }
+
+  let listViewRef
+
+  const topButtonhandler = () => {
+    listViewRef.scrollToOffset({ offset: 0, animated: true })
   }
 
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
@@ -92,23 +102,38 @@ const Home = () => {
       </StyleCategoryWrap>
 
       {/* flatlist 영역 */}
-      {category === 'newbook' ? (
-        <FlatList
-          refreshing={isRefreshing}
-          onRefresh={onRefresh}
-          data={bookRequestData}
-          renderItem={({ item }) => <NewBookItem book={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      ) : (
-        <FlatList
-          refreshing={isRefreshing}
-          onRefresh={onRefresh}
-          data={recommendBooks}
-          renderItem={({ item }) => <NewBookItem book={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      )}
+      <StyleFlatListWrap>
+        {category === 'newbook' ? (
+          <FlatList
+            onScroll={(e) => setScrollVertical(e.nativeEvent.contentOffset.y)}
+            ref={(ref) => {
+              listViewRef = ref
+            }}
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            data={bookRequestData}
+            renderItem={({ item }) => <NewBookItem book={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        ) : (
+          <FlatList
+            onScroll={(e) => setScrollVertical(e.nativeEvent.contentOffset.y)}
+            ref={(ref) => {
+              listViewRef = ref
+            }}
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            data={recommendBooks}
+            renderItem={({ item }) => <NewBookItem book={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        )}
+        {scrollVertical > CONTENT_OFFSET_THRESHOLD && (
+          <StyleScrollIconWrap onPress={topButtonhandler}>
+            <EvilIcons name="arrow-up" size={60} color="#61d2bc" />
+          </StyleScrollIconWrap>
+        )}
+      </StyleFlatListWrap>
     </>
   )
 }
@@ -172,6 +197,18 @@ const StyleLoader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`
+
+const StyleScrollIconWrap = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`
+
+const StyleFlatListWrap = styled.View`
+  flex: 1;
+  position: relative;
+  width: 100%;
 `
 
 export default Home
