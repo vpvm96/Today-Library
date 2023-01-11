@@ -195,7 +195,7 @@ const PasswordBody = styled.View`
 `
 const LoginPasswordInput = styled.TextInput`
   width: 90%;
-00`
+`
 const TouchIcon = styled.TouchableOpacity``
 
 const SignUpNicknameTextInput = styled.TextInput`
