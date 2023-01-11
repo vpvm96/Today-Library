@@ -14,12 +14,20 @@ const NewBookItem = ({ book }) => {
       onPress={() => navigate('Stacks', { screen: 'BookDetail', params: book })}
     >
       <StyleNewBookWrap>
-        <StyleNewBookImg source={{ uri: imgUrl }}></StyleNewBookImg>
+        <StyleNewBookImgWrap>
+          <StyleNewBookImg source={{ uri: imgUrl }} />
+        </StyleNewBookImgWrap>
         <StyleNewBookInfo>
-          <StyleNewBookTitle>{title}</StyleNewBookTitle>
+          <StyleNewBookTitle>
+            {title.length > 6 ? title.substring(0, 6) + '..' : title}
+          </StyleNewBookTitle>
           <StyleNewBookText>{author}</StyleNewBookText>
           <StyleNewBookEtcWrap>
-            <StyleNewBookText>{publisher}</StyleNewBookText>
+            <StyleNewBookText>
+              {publisher.length > 3
+                ? publisher.substring(0, 3) + '..'
+                : publisher}
+            </StyleNewBookText>
             <StyleNewBookText>&#8226;</StyleNewBookText>
             <StyleNewBookText>{createdAt}</StyleNewBookText>
           </StyleNewBookEtcWrap>
@@ -41,16 +49,23 @@ const NewBookItem = ({ book }) => {
 
 const StyleNewBookItem = styled.TouchableOpacity`
   width: 100%;
-  height: 180px;
   background-color: #fff;
   padding: 10px;
   justify-content: center;
 `
 
 const StyleNewBookWrap = styled.View`
+  width: 100%;
+  height: 190px;
   align-items: center;
   flex-direction: row;
   justify-content: space-around;
+`
+
+const StyleNewBookImgWrap = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const StyleNewBookImg = styled.Image`
@@ -60,7 +75,6 @@ const StyleNewBookImg = styled.Image`
 
 const StyleNewBookInfo = styled.View`
   width: 50%;
-  height: 100%;
   justify-content: flex-start;
   padding-top: 10px;
 `
