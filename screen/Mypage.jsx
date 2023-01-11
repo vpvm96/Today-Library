@@ -39,36 +39,34 @@ const Mypage = () => {
     onAuthStateChanged(authService, (user) => {
       if (!user) {
         navigation.replace('LoginPage')
+      } else if (user) {
+        const q = query(
+          collection(fireStore, 'users'),
+          where('uid', '==', currentUser.uid)
+        )
+        console.log('user', currentUser.uid)
+
+        onSnapshot(q, (snapshot) => {
+          const myBooks = snapshot.docs.map((doc) => {
+            const myBook = {
+              id: doc.id,
+              email: doc.data().email,
+              readBook: doc.data().readBook,
+              bookMark: doc.data().bookmark,
+            }
+            console.log('newBook', myBook.readBook.shift())
+            console.log('bookMark', myBook.bookMark.shift())
+            setReadBooks(myBook.readBook)
+            setMarkBooks(myBook.bookMark)
+            return myBook
+          })
+        })
+        // 책 정보 전체 가져오기
+        getBookRequest(setBooks)
       }
+      return
     })
   }, [IsFocused])
-
-  // user 정보로부터 책 정보 가져오기
-  useEffect(() => {
-    // 로그인 유저의 정보 가져오기
-    const q = query(
-      collection(fireStore, 'users'),
-      where('uid', '==', currentUser.uid)
-    )
-
-    onSnapshot(q, (snapshot) => {
-      const myBooks = snapshot.docs.map((doc) => {
-        const myBook = {
-          id: doc.id,
-          email: doc.data().email,
-          readBook: doc.data().readBook,
-          bookMark: doc.data().bookmark,
-        }
-        console.log('newBook', myBook.readBook.shift())
-        console.log('bookMark', myBook.bookMark.shift())
-        setReadBooks(myBook.readBook)
-        setMarkBooks(myBook.bookMark)
-        return myBook
-      })
-    })
-    // 책 정보 전체 가져오기
-    getBookRequest(setBooks)
-  }, [])
 
   return (
     <ScrollView>
