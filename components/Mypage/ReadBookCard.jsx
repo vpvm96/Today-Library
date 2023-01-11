@@ -1,11 +1,9 @@
 import React from 'react'
 import styled from '@emotion/native'
-import { View, Text, ScrollView } from 'react-native'
+import { View } from 'react-native'
 
 const ReadBookCard = ({ readId, books }) => {
   const readBook = books.filter((book) => book.id === readId)
-
-  // console.log('readBook', readBook[0])
 
   return (
     <RecordBookInfo>
@@ -44,7 +42,6 @@ export default ReadBookCard
 const RecordBookInfo = styled.TouchableOpacity`
   width: 100%;
   height: 180px;
-  /* background-color: lightgrey; */
   padding: 10px;
   justify-content: center;
   align-items: center;
@@ -60,7 +57,6 @@ const BookItemInfo = styled.View`
   height: 100%;
   justify-content: flex-start;
   padding-top: 10px;
-  /* background-color: skyblue; */
 `
 const BookTitle = styled.Text`
   font-size: 20px;
