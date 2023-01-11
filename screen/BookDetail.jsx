@@ -5,10 +5,15 @@ import { Alert } from 'react-native'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 import { getAuth } from 'firebase/auth'
 import { getAuthCurrentUserInfo } from '../api/authService'
-import { getReviewRequest, completedReadBook } from '../api/bookDetailService'
+import {
+  getReviewRequest,
+  completedReadBook,
+  bookMarkBook,
+} from '../api/bookDetailService'
 import BookDetailHeader from '../components/BookDetail/BookDetailHead'
 import BookDetailComment from '../components/BookDetail/BookDetailComment'
 import BookReviewModal from '../components/BookDetail/BookReviewModal'
+import useCalculRating from '../hooks/useCalculRating'
 import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
 
@@ -24,10 +29,11 @@ const BookDetail = ({ route: { params: book } }) => {
     createReviewClickHandler,
   ] = useInput('')
   const [isRating, setIsRating] = useState(0)
+  const [avgRating, calculRatingHadnler] = useCalculRating(reviews)
   const { navigate } = useNavigation()
 
   useEffect(() => {
-    getReviewRequest(setReviews, book.id)
+    getReviewRequest(setReviews, book.id, calculRatingHadnler)
     getAuthCurrentUserInfo(setUser)
   }, [])
 
@@ -65,7 +71,25 @@ const BookDetail = ({ route: { params: book } }) => {
       ])
       return
     }
+    Alert.alert('읽음 처리가 완료 되었습니다.', '', [
+      { text: '확인', style: 'cancel' },
+    ])
     completedReadBook(book, user)
+  }
+
+  const bookMarkBookHandler = () => {
+    if (!auth.currentUser) {
+      navigate('LoginPage')
+      return
+    }
+    if (book.bookmarkUid.includes(auth.currentUser.uid)) {
+      Alert.alert('이미 찜 하셨습니다.', '', [
+        { text: '확인', style: 'cancel' },
+      ])
+      return
+    }
+    Alert.alert('찜 완료 되었습니다.', '', [{ text: '확인', style: 'cancel' }])
+    bookMarkBook(book, user)
   }
 
   return (
@@ -75,7 +99,7 @@ const BookDetail = ({ route: { params: book } }) => {
         <BookDetailBodyRatingContainer>
           <BookDetailRatingBox>
             <BookDetailRatingText>총 평가</BookDetailRatingText>
-            <Rating startingValue={3} imageSize={25} readonly />
+            <Rating startingValue={avgRating} imageSize={25} readonly />
           </BookDetailRatingBox>
           <BookDetailReadButtonBox onPress={completedReadBookHandler}>
             <MaterialCommunityIcons name="book" size={24} color="#36A992" />
@@ -93,7 +117,7 @@ const BookDetail = ({ route: { params: book } }) => {
           <Ionicons name="water" size={30} color="#36A992" />
           <BookDetailReviewText>리뷰등록</BookDetailReviewText>
         </BookDetailReviewBtn>
-        <BookDetailBookMarkBtn>
+        <BookDetailBookMarkBtn onPress={bookMarkBookHandler}>
           <Ionicons
             name="ios-shield-checkmark-sharp"
             size={30}
