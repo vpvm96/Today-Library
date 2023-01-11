@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useLinkTo, useNavigation } from '@react-navigation/native'
 import styled from '@emotion/native'
