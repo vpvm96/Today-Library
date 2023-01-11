@@ -5,12 +5,17 @@ import { Feather } from '@expo/vector-icons'
 import { getBookRequest } from '../api/bookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
 import RecommendBookItem from '../components/MainBookItems/RecommendBookItem'
+import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
 
 const Home = () => {
   const [books, setBooks] = useState([])
   const [recommendBooks, setRecommendBooks] = useState([])
   const [text, onChangeText] = useState('')
   const [category, setCategory] = useState('newbook')
+
+  // query
+  const queryClinet = useQueryClient()
+  const { data, isLoading } = useQuery(getBookRequest())
 
   const randomBooksfunc = () => {
     const randomBooks = []
@@ -19,7 +24,6 @@ const Home = () => {
       let randomNum = Math.floor(Math.random() * books.length)
       randomBooks.push(books[randomNum])
     }
-
     setRecommendBooks(randomBooks)
   }
 
@@ -29,10 +33,9 @@ const Home = () => {
       return Alert.alert('알림', '도서명을 입력해주세요.', [{ text: '확인' }])
   }
 
-  useEffect(() => {
-    getBookRequest(setBooks)
-    randomBooksfunc()
-  }, [category])
+  // useEffect(() => {
+  //   getBookRequest(setBooks)
+  // }, [])
 
   return (
     <>
