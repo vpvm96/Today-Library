@@ -1,29 +1,39 @@
-import React, { useEffect, useState, useRef } from 'react'
-import {
-  Alert,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native'
-import styled from '@emotion/native'
-import { Feather } from '@expo/vector-icons'
-import { getMainBookRequest, getInfiniteData } from '../api/mainBookService'
-import NewBookItem from '../components/MainBookItems/NewBookItem'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useQueryClient, useInfiniteQuery } from 'react-query'
+import { FlatList, ActivityIndicator } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 import { EvilIcons } from '@expo/vector-icons'
+import {
+  getMainBookRequest,
+  getInfiniteData,
+  searchBookRequest,
+} from '../api/mainBookService'
+import NewBookItem from '../components/MainBookItems/NewBookItem'
+import styled from '@emotion/native'
 
 const Home = () => {
   const [recommendBooks, setRecommendBooks] = useState([])
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [text, onChangeText] = useState('')
+  const [serachBooks, setSerachBooks] = useState([])
   const [category, setCategory] = useState('newbook')
+  const [text, onChangeText] = useState('')
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [scrollVertical, setScrollVertical] = useState(0)
   const CONTENT_OFFSET_THRESHOLD = 100
 
   // const queryClinet = useQueryClient()
+
+  const onSubmitHandler = async () => {
+    if (text === '') {
+      setSerachBooks('')
+      return
+    }
+    const res = await searchBookRequest(text)
+    setSerachBooks(res)
+  }
+
+  useEffect(() => {
+    onSubmitHandler()
+  }, [text])
 
   // useQeury
   const {
@@ -65,10 +75,6 @@ const Home = () => {
   }
 
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
-  const onSubmitHandler = () => {
-    if (text === '')
-      return Alert.alert('알림', '도서명을 입력해주세요.', [{ text: '확인' }])
-  }
 
   return (
     <>
@@ -76,7 +82,6 @@ const Home = () => {
       <StyleTextWrap>
         <StyleTextInput
           placeholder="도서명을 입력해주세요."
-          onSubmitEditing={onSubmitHandler}
           onChangeText={onChangeText}
           value={text}
         />
@@ -111,7 +116,7 @@ const Home = () => {
             }}
             refreshing={isRefreshing}
             onRefresh={onRefresh}
-            data={bookRequestData}
+            data={serachBooks.length <= 0 ? bookRequestData : serachBooks}
             renderItem={({ item }) => <NewBookItem book={item} />}
             keyExtractor={(item) => item.id}
           />
