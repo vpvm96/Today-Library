@@ -56,12 +56,6 @@ const Mypage = () => {
     getDocs(q).then((querySnapshop) => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
-        {
-          console.log('52 doc.data', doc.data())
-        }
-        {
-          console.log('62 doc.data bookMark', doc.data().bookmark.length)
-        }
         userInfo.push({
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
@@ -70,7 +64,6 @@ const Mypage = () => {
           readCount: doc.data().readBook.length,
         })
         setNickName(userInfo[0].nickname)
-        console.log('userInfo[0].mymessage', userInfo[0].mymessage)
         setMessage(userInfo[0].mymessage)
         setProfileImg(userInfo[0].profileImg)
         setBookMarkCount(userInfo[0].bookMarkCount)
