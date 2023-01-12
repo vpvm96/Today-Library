@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Rating } from 'react-native-ratings'
-import { Alert } from 'react-native'
+import { Alert, useColorScheme } from 'react-native'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 import { getAuth } from 'firebase/auth'
 import { getAuthCurrentUserInfo } from '../api/authService'
@@ -20,6 +20,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const BookDetail = ({ route: { params: book } }) => {
   const auth = getAuth()
+  const scheme = useColorScheme()
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [reviews, setReviews] = useState([])
   const [user, setUser] = useState([])
@@ -104,8 +105,9 @@ const BookDetail = ({ route: { params: book } }) => {
               type="custom"
               startingValue={avgRating}
               imageSize={25}
+              ratingBackgroundColor="#c0c0c0"
+              tintColor={scheme === 'dark' ? '#1E2025' : '#ffff'}
               readonly
-              tintColor="white"
             />
           </BookDetailRatingBox>
           <BookDetailReadButtonBox onPress={completedReadBookHandler}>
