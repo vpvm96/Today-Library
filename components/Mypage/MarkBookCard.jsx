@@ -1,12 +1,19 @@
 import React from 'react'
-import styled from '@emotion/native'
 import { View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import styled from '@emotion/native'
 
 const MarkBookCard = ({ readId, books }) => {
   const markBook = books.filter((book) => book.id === readId)
+  const { navigate } = useNavigation()
 
   return (
-    <RecordBookInfo>
+    <RecordBookInfo
+      id={markBook[0]?.id}
+      onPress={() =>
+        navigate('Stacks', { screen: 'BookDetail', params: markBook[0] })
+      }
+    >
       <View
         style={{
           alignItems: 'center',
