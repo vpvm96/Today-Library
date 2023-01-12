@@ -213,6 +213,7 @@ const ReadedIcon = styled.Text`
   margin-right: 20px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.IconColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 const ReadedCount = styled.Text`
@@ -226,6 +227,7 @@ const MarkedIcon = styled.Text`
   margin-right: 20px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.IconColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 const MarkedCount = styled.Text`
