@@ -156,7 +156,7 @@ const StyleTextWrap = styled.View`
 `
 
 const StyleTextInput = styled.TextInput`
-  background-color: #3f3e44;
+  background-color: ${(props) => props.theme.backgroundColor};
   color: ${(props) => props.theme.textColor};
   width: 100%;
   height: 60px;
