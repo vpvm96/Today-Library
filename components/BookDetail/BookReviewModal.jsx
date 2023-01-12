@@ -79,7 +79,7 @@ const ModalBackDrop = styled.View`
 const ModalDialog = styled.KeyboardAvoidingView`
   background-color: ${(props) => props.theme.backgroundColor};
   width: 80%;
-  height: 70%;
+  height: 83%;
   padding: 20px;
   border-radius: 5px;
 `
