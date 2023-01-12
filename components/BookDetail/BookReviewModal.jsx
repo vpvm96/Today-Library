@@ -31,7 +31,9 @@ const BookReviewModal = ({
           }}
         >
           <ModalRatingBox>
-            <ModalBookTitle>{bookTitle}</ModalBookTitle>
+            <ModalBookTitle>
+              {bookTitle.slice(0, 10)} {bookTitle.length > 10 && '...'}
+            </ModalBookTitle>
             <Rating
               type="custom"
               style={{ marginTop: 13 }}
