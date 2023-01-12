@@ -1,4 +1,4 @@
-import { Platform, Modal } from 'react-native'
+import { Platform, Modal, useColorScheme } from 'react-native'
 import { Rating } from 'react-native-ratings'
 import styled from '@emotion/native'
 
@@ -11,6 +11,7 @@ const BookReviewModal = ({
   onCreateDetailReview,
   onGetRatingDetailModal,
 }) => {
+  const scheme = useColorScheme()
   return (
     <Modal visible={isOpenModal} transparent animationType="fade">
       <ModalBackDrop>
@@ -32,10 +33,13 @@ const BookReviewModal = ({
           <ModalRatingBox>
             <ModalBookTitle>{bookTitle}</ModalBookTitle>
             <Rating
+              type="custom"
               style={{ marginTop: 13 }}
               startingValue={0}
               ratingCount={5}
               imageSize={30}
+              ratingBackgroundColor="#c0c0c0"
+              tintColor={scheme === 'dark' ? '#1E2025' : '#ffff'}
               onFinishRating={onGetRatingDetailModal}
             />
           </ModalRatingBox>
@@ -45,6 +49,7 @@ const BookReviewModal = ({
               multiline={true}
               numberOfLines={5}
               placeholder="내용을 입력해 주세요"
+              placeholderTextColor={scheme === 'dark' ? '#ffff' : 'gray'}
               textAlignVertical="top"
               value={reviewValue}
               onChangeText={onReviewValueChange}
@@ -72,7 +77,7 @@ const ModalBackDrop = styled.View`
   z-index: 100;
 `
 const ModalDialog = styled.KeyboardAvoidingView`
-  background-color: white;
+  background-color: ${(props) => props.theme.backgroundColor};
   width: 80%;
   height: 70%;
   padding: 20px;
@@ -88,6 +93,7 @@ const ModalRatingBox = styled.View`
 const ModalBookTitle = styled.Text`
   font-size: 30px;
   margin-top: 20px;
+  color: ${(props) => props.theme.textColor};
 `
 const ModalInputBox = styled.View`
   width: 100%;
@@ -96,11 +102,14 @@ const ModalInputBox = styled.View`
 const ModalInputText = styled.Text`
   font-size: 30px;
   margin-left: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const ModalInput = styled.TextInput`
-  background-color: white;
+  background-color: ${(props) => props.theme.backgroundModalInputColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 10px;
   border: 2px solid ${(props) => props.theme.borderColor};
+  border-color: ${(props) => props.theme.borderColorModal};
   font-size: 20px;
   padding: 10px;
   margin-top: 20px;

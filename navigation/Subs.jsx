@@ -18,6 +18,7 @@ function Subs({ navigation: { goBack } }) {
           tabBarStyle: {
             backgroundColor: '#61D2BC',
           },
+          tabBarStyle: { display: 'none' },
         }}
         name="ProfileEdit"
         component={ProfileEdit}
