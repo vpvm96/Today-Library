@@ -23,6 +23,7 @@ const ProfileEdit = () => {
   )
   const [profileImgUrl, setProfileImgUrl] = useState('')
   const [nickName, setNickName] = useState('기본 닉네임')
+  const [emailId, setEmailId] = useState('')
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -68,10 +69,13 @@ const ProfileEdit = () => {
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
           profileImg: doc.data().profileImg,
+          emailId: doc.data().email,
         })
+        console.log('userInfo', userInfo)
         setNickName(userInfo[0].nickname)
         setMessage(userInfo[0].mymessage)
         setProfileImg(userInfo[0].profileImg)
+        setEmailId(userInfo[0].emailId)
       })
     })
   }
@@ -107,6 +111,7 @@ const ProfileEdit = () => {
           value={nickName}
         ></NickNameInput>
       </NickNameInputContainer>
+      <EmailId>{emailId}</EmailId>
       {/* 나의 소개 */}
       <IntroduceLabel>나의 메세지</IntroduceLabel>
       <IntroduceInput
@@ -120,7 +125,7 @@ const ProfileEdit = () => {
           <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
         </SaveButton>
         <CancelButton>
-          <CancelButtonText>취소</CancelButtonText>
+          <CancelButtonText>나가기</CancelButtonText>
         </CancelButton>
       </ButtonWrap>
     </StyleWrap>
@@ -131,8 +136,10 @@ export default ProfileEdit
 const StyleWrap = styled.View`
   flex-direction: column;
   width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
+  background-color: #f6f2e5;
 `
 const ProfileImageContainer = styled.View`
   width: 150px;
@@ -154,7 +161,7 @@ const ChangeImageButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  border: 1px solid grey;
+  border: 1px solid #bbbbbb;
 `
 const NickNameInputContainer = styled.View`
   border-bottom-width: 1px;
@@ -164,6 +171,12 @@ const NickNameInputContainer = styled.View`
   justify-content: center;
   align-items: center;
 `
+const EmailId = styled.Text`
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 10px;
+`
+
 const NickNameInput = styled.TextInput`
   font-size: 20px;
   margin-top: 10px;
@@ -171,7 +184,7 @@ const NickNameInput = styled.TextInput`
 const IntroduceLabel = styled.Text`
   margin-top: 20px;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
   width: 70%;
 `
@@ -182,7 +195,7 @@ const IntroduceInput = styled.TextInput`
   height: 30%;
   background-color: white;
   border-radius: 10px;
-  border: 1px solid grey;
+  border: 1px solid #dddddd;
   font-size: 18px;
 `
 const ButtonWrap = styled.View`
@@ -195,7 +208,8 @@ const ButtonWrap = styled.View`
 const SaveButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
-  background-color: #61d2bc;
+  /* background-color: #61d2bc; */
+  background-color: #3f78db;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -203,17 +217,18 @@ const SaveButton = styled.TouchableOpacity`
 `
 const SaveButtonText = styled.Text`
   font-size: 20px;
-  color: white;
+  color: #f6f6f6;
 `
 const CancelButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
-  background-color: lightgray;
+  /* background-color: #61d2bc; */
+  background-color: #3f78db;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
 `
 const CancelButtonText = styled.Text`
   font-size: 20px;
-  color: black;
+  color: #f6f6f6;
 `
