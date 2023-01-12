@@ -141,7 +141,7 @@ const BookDetail = ({ route: { params: book } }) => {
 
 const BookDetailWrap = styled.ScrollView`
   width: 100%;
-  background-color: white;
+  background-color: ${(props) => props.theme.backgroundColor};
 `
 const BookDetailBodyWrap = styled.View`
   width: 100%;
@@ -165,7 +165,9 @@ const BookDetailRatingBox = styled.View`
 const BookDetailRatingText = styled.Text`
   font-size: 25px;
   padding: 0 15px 0 100px;
+  color: ${(props) => props.theme.textColor};
 `
+
 const BookDetailReadButtonBox = styled.TouchableOpacity`
   width: 30%;
   margin-top: 20px;
@@ -176,6 +178,7 @@ const BookDetailReadButtonBox = styled.TouchableOpacity`
 const BookDetailReadText = styled.Text`
   font-size: 17px;
   margin-left: 5px;
+  color: ${(props) => props.theme.textColor};
 `
 const BookDetailCommentContainer = styled.ScrollView`
   width: 80%;
@@ -205,6 +208,7 @@ const BookDetailReviewBtn = styled.TouchableOpacity`
 const BookDetailReviewText = styled.Text`
   margin-left: 10px;
   font-size: 20px;
+  color: ${(props) => props.theme.textColor};
 `
 const BookDetailBookMarkBtn = styled.TouchableOpacity`
   width: 50%;
@@ -216,6 +220,7 @@ const BookDetailBookMarkBtn = styled.TouchableOpacity`
 const BookDetailBookMarkText = styled.Text`
   margin-left: 10px;
   font-size: 20px;
+  color: ${(props) => props.theme.textColor};
 `
 
 export default BookDetail

@@ -3,11 +3,7 @@ import styled from '@emotion/native'
 import Mypage from '../screen/Mypage'
 import Home from '../screen/Home'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
-// import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'
-import { Image, TouchableOpacity, View, Text } from 'react-native'
-import ProfileEdit from '../screen/ProfileEdit'
-import Subs from './Subs'
 import { useNavigation } from '@react-navigation/core'
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged } from '@firebase/auth'
@@ -48,9 +44,9 @@ const Tabs = ({ navigation }) => {
         },
         tabBarActiveTintColor: '#fff',
         headerRight: () => (
-          <LogoutText onPress={NavLogoutHandler}>
-            <Text>{logoutText ? '로그인' : '로그아웃'}</Text>
-          </LogoutText>
+          <LogoutTextBox onPress={NavLogoutHandler}>
+            <LogoutText>{logoutText ? '로그인' : '로그아웃'}</LogoutText>
+          </LogoutTextBox>
         ),
       }}
     >
@@ -90,7 +86,12 @@ const LogoImage = styled.Image`
 const SettingIcon = styled.TouchableOpacity`
   margin-right: 20px;
 `
-const LogoutText = styled.TouchableOpacity`
+
+const LogoutTextBox = styled.TouchableOpacity`
   margin-right: 20px;
   margin-top: 15px;
+`
+
+const LogoutText = styled.Text`
+  color: ${(props) => props.theme.textColor};
 `

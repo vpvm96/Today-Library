@@ -15,6 +15,9 @@ function Subs({ navigation: { goBack } }) {
               <Text>Back</Text>
             </TouchableOpacity>
           ),
+          tabBarStyle: {
+            backgroundColor: '#61D2BC',
+          },
         }}
         name="ProfileEdit"
         component={ProfileEdit}

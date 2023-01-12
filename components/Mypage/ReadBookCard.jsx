@@ -69,10 +69,12 @@ const BookTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const BookAuthor = styled.Text`
   font-size: 15px;
   margin-right: 8px;
+  color: ${(props) => props.theme.textColor};
 `
 
 const BookPublishAndCreatedAtWrap = styled.View`
@@ -85,8 +87,10 @@ const BookPublishAndCreatedAtWrap = styled.View`
 const BookPublish = styled.Text`
   font-size: 15px;
   margin-right: 8px;
+  color: ${(props) => props.theme.textColor};
 `
 const BookCreatedAt = styled.Text`
   font-size: 15px;
   margin-right: 8px;
+  color: ${(props) => props.theme.textColor};
 `

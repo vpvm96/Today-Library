@@ -182,7 +182,7 @@ const StyleContainer = styled.View`
 
 // const StyleWrap = styled.View`
 const StyleWrap = styled.ScrollView`
-  background-color: #f6f2e5;
+  background-color: ${(props) => props.theme.backgroundColor};
   /* margin: auto; */
   height: 100%;
   width: 100%;
@@ -222,11 +222,13 @@ const EmailId = styled.Text`
   font-weight: 300;
   margin-top: 10px;
   margin: 0 auto;
+  color: ${(props) => props.theme.textColor};
 `
 
 const NickNameInput = styled.TextInput`
   font-size: 20px;
   margin-top: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const Introduce = styled.View`
   width: 70%;
@@ -242,6 +244,7 @@ const IntroduceLabel = styled.Text`
   text-align: left;
   /* width: 70%;
   height: 30%; */
+  color: ${(props) => props.theme.textColor};
 `
 const IntroduceInput = styled.TextInput`
   margin-top: 10px;

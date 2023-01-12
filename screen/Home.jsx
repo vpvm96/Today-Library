@@ -9,7 +9,7 @@ import {
   searchBookRequest,
 } from '../api/mainBookService'
 import NewBookItem from '../components/MainBookItems/NewBookItem'
-import styled from '@emotion/native'
+import styled, { css } from '@emotion/native'
 
 const Home = () => {
   const [recommendBooks, setRecommendBooks] = useState([])
@@ -77,7 +77,7 @@ const Home = () => {
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
 
   return (
-    <>
+    <HomeBody>
       {/* 검색창 */}
       <StyleTextWrap>
         <StyleTextInput
@@ -139,18 +139,25 @@ const Home = () => {
           </StyleScrollIconWrap>
         )}
       </StyleFlatListWrap>
-    </>
+    </HomeBody>
   )
 }
 
 // 검색창 영역
+const HomeBody = styled.View`
+  background-color: ${(props) => props.theme.backgroundColor};
+  width: 100%;
+  height: 100%;
+`
+
 const StyleTextWrap = styled.View`
   position: relative;
   width: 100%;
 `
 
 const StyleTextInput = styled.TextInput`
-  background-color: #eeeeee;
+  background-color: #3f3e44;
+  color: ${(props) => props.theme.textColor};
   width: 100%;
   height: 60px;
   font-size: 20px;
@@ -167,7 +174,7 @@ const StyleIconWrap = styled.TouchableOpacity`
 const StyleCategoryWrap = styled.View`
   display: flex;
   flex-direction: row;
-  background-color: #fff;
+
   width: 100%;
 `
 
@@ -196,6 +203,7 @@ const StyleCategoryRightButtons = styled.TouchableOpacity`
 const StyleCategoryText = styled.Text`
   font-size: 20px;
   font-weight: 700;
+  color: ${(props) => props.theme.textColor};
 `
 
 const StyleLoader = styled.View`
