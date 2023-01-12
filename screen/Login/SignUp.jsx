@@ -86,7 +86,8 @@ export default function SignUp() {
           bookmark: [],
           readBook: [],
           mymessage: '',
-          profileImg: '',
+          profileImg:
+            'https://firebasestorage.googleapis.com/v0/b/today-library.appspot.com/o/images%2FprofileImg.png?alt=media&token=8e0b5187-d297-4fa0-b5b2-de80c55f96f4',
         })
         console.log('회원가입성공')
         setEmail('')
