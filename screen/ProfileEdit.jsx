@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Alert, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { fireStore, firestorage } from '../api/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import {
@@ -23,6 +24,7 @@ const ProfileEdit = () => {
   )
   const [profileImgUrl, setProfileImgUrl] = useState('')
   const [nickName, setNickName] = useState('기본 닉네임')
+  const [emailId, setEmailId] = useState('')
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const ProfileEdit = () => {
       aspect: [1, 1],
       quality: 1,
     })
-    setProfileImgUrl(result.assets[0])
+    if (result) setProfileImgUrl(result.assets[0])
   }
 
   // 프로필 변경 내용 FB 저장
@@ -53,6 +55,7 @@ const ProfileEdit = () => {
       mymessage: message,
       profileImg: downLoadImage,
     })
+    alert('저장 완료')
   }
 
   // 기존 프로필 정보 가져오기
@@ -68,12 +71,19 @@ const ProfileEdit = () => {
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
           profileImg: doc.data().profileImg,
+          emailId: doc.data().email,
         })
         setNickName(userInfo[0].nickname)
         setMessage(userInfo[0].mymessage)
         setProfileImg(userInfo[0].profileImg)
+        setEmailId(userInfo[0].emailId)
       })
     })
+  }
+
+  // 나가기 버튼 클릭시 alert 경고
+  const onCancleButtonHandler = () => {
+    console.log('취소버튼 클릭')
   }
 
   return (
@@ -101,38 +111,40 @@ const ProfileEdit = () => {
         </ChangeImageButton>
       </ProfileImageContainer>
       {/* 닉네임 */}
-      <NickNameInputContainer>
-        <NickNameInput
-          onChangeText={setNickName}
-          value={nickName}
-        ></NickNameInput>
-      </NickNameInputContainer>
-      {/* 나의 소개 */}
-      <IntroduceLabel>나의 메세지</IntroduceLabel>
-      <IntroduceInput
-        placeholder="내용을 입력해주세요."
-        multiline={true}
-        onChangeText={setMessage}
-        value={message}
-      ></IntroduceInput>
-      <ButtonWrap>
-        <SaveButton>
-          <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
-        </SaveButton>
-        <CancelButton>
-          <CancelButtonText>취소</CancelButtonText>
-        </CancelButton>
-      </ButtonWrap>
+      <KeyboardAvoidingView behavior={'padding'}>
+        <NickNameInputContainer onPress={Keyboard.dismiss}>
+          <NickNameInput
+            onChangeText={setNickName}
+            value={nickName}
+          ></NickNameInput>
+        </NickNameInputContainer>
+        <EmailId>{emailId}</EmailId>
+        {/* 나의 소개 */}
+        <IntroduceLabel>나의 메세지</IntroduceLabel>
+        <IntroduceInput
+          placeholder="내용을 입력해주세요."
+          multiline={true}
+          onChangeText={setMessage}
+          value={message}
+          style={{ textAlignVertical: 'top' }}
+        ></IntroduceInput>
+        <ButtonWrap>
+          <SaveButton>
+            <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
+          </SaveButton>
+          <CancelButton onPrees={() => onCancleButtonHandler}>
+            <CancelButtonText>나가기</CancelButtonText>
+          </CancelButton>
+        </ButtonWrap>
+      </KeyboardAvoidingView>
     </StyleWrap>
   )
 }
 export default ProfileEdit
 
-const StyleWrap = styled.View`
+const StyleWrap = styled.ScrollView`
   flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+  background-color: #f6f2e5;
 `
 const ProfileImageContainer = styled.View`
   width: 150px;
@@ -154,7 +166,7 @@ const ChangeImageButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  border: 1px solid grey;
+  border: 1px solid #bbbbbb;
 `
 const NickNameInputContainer = styled.View`
   border-bottom-width: 1px;
@@ -164,6 +176,12 @@ const NickNameInputContainer = styled.View`
   justify-content: center;
   align-items: center;
 `
+const EmailId = styled.Text`
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 10px;
+`
+
 const NickNameInput = styled.TextInput`
   font-size: 20px;
   margin-top: 10px;
@@ -171,7 +189,7 @@ const NickNameInput = styled.TextInput`
 const IntroduceLabel = styled.Text`
   margin-top: 20px;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
   width: 70%;
 `
@@ -182,7 +200,7 @@ const IntroduceInput = styled.TextInput`
   height: 30%;
   background-color: white;
   border-radius: 10px;
-  border: 1px solid grey;
+  border: 1px solid #dddddd;
   font-size: 18px;
 `
 const ButtonWrap = styled.View`
@@ -195,7 +213,8 @@ const ButtonWrap = styled.View`
 const SaveButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
-  background-color: #61d2bc;
+  /* background-color: #61d2bc; */
+  background-color: #3f78db;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -203,17 +222,18 @@ const SaveButton = styled.TouchableOpacity`
 `
 const SaveButtonText = styled.Text`
   font-size: 20px;
-  color: white;
+  color: #f6f6f6;
 `
 const CancelButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
-  background-color: lightgray;
+  /* background-color: #61d2bc; */
+  background-color: #3f78db;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
 `
 const CancelButtonText = styled.Text`
   font-size: 20px;
-  color: black;
+  color: #f6f6f6;
 `
