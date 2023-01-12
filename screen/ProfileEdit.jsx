@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, KeyboardAvoidingView, Keyboard } from 'react-native'
+import { Alert, KeyboardAvoidingView, Keyboard, View } from 'react-native'
 import { fireStore, firestorage } from '../api/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { useNavigation } from '@react-navigation/native'
 import {
   doc,
   collection,
@@ -16,6 +17,8 @@ import { Ionicons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 
 const ProfileEdit = () => {
+  const { navigate } = useNavigation()
+
   const auth = getAuth()
   const currentUser = auth.currentUser
 
@@ -82,76 +85,113 @@ const ProfileEdit = () => {
   }
 
   // 나가기 버튼 클릭시 alert 경고
-  const onCancleButtonHandler = () => {
-    console.log('취소버튼 클릭')
+  // const onCancleButtonHandler = () => {
+  //   console.log('취소버튼 클릭')
+  // }
+
+  const onCancleButtonHandler = async () => {
+    Alert.alert(
+      // Alert문구
+      '변경한 내용을 저장하지 않았다면',
+      '변경 내용이 사라집니다. 정말 나가시겠어요?',
+      [
+        // 버튼 배열
+        {
+          text: '아니요',
+          onPress: () => console.log('아니요'),
+          style: 'cancel',
+        },
+        {
+          text: '네',
+          // onPress: () => navigation.navigate('Login'),
+          onPress: () => navigate('Mypage', { screen: 'Mypage' }),
+        },
+      ],
+      { cancelable: false }
+    )
   }
 
   return (
-    <StyleWrap>
-      {/* 프로필 이미지 */}
-      <ProfileImageContainer>
-        {!profileImgUrl ? (
-          <ProfileImage
-            source={{
-              uri: `${profileImg}`,
-            }}
-            onChangePhoto={setProfileImg}
-          ></ProfileImage>
-        ) : (
-          <ProfileImage
-            source={profileImgUrl}
-            onChangePhoto={setProfileImg}
-          ></ProfileImage>
-        )}
-        <ChangeImageButton
-          style={{ position: 'absolute', right: 0, bottom: 0 }}
-          onPress={onChangeImageHandler}
-        >
-          <Ionicons name="md-camera-reverse" size={24} color="black" />
-        </ChangeImageButton>
-      </ProfileImageContainer>
-      {/* 닉네임 */}
-      <KeyboardAvoidingView behavior={'padding'}>
-        <NickNameInputContainer onPress={Keyboard.dismiss}>
-          <NickNameInput
-            onChangeText={setNickName}
-            value={nickName}
-          ></NickNameInput>
-        </NickNameInputContainer>
-        <EmailId>{emailId}</EmailId>
-        {/* 나의 소개 */}
-        <IntroduceLabel>나의 메세지</IntroduceLabel>
-        <IntroduceInput
-          placeholder="내용을 입력해주세요."
-          multiline={true}
-          onChangeText={setMessage}
-          value={message}
-          style={{ textAlignVertical: 'top' }}
-        ></IntroduceInput>
-        <ButtonWrap>
-          <SaveButton>
-            <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
-          </SaveButton>
-          <CancelButton onPrees={() => onCancleButtonHandler}>
-            <CancelButtonText>나가기</CancelButtonText>
-          </CancelButton>
-        </ButtonWrap>
-      </KeyboardAvoidingView>
-    </StyleWrap>
+    <StyleContainer>
+      <StyleWrap>
+        {/* 프로필 이미지 */}
+        <ProfileImageContainer>
+          {!profileImgUrl ? (
+            <ProfileImage
+              source={{
+                uri: `${profileImg}`,
+              }}
+              onChangePhoto={setProfileImg}
+            ></ProfileImage>
+          ) : (
+            <ProfileImage
+              source={profileImgUrl}
+              onChangePhoto={setProfileImg}
+            ></ProfileImage>
+          )}
+          <ChangeImageButton
+            style={{ position: 'absolute', right: 0, bottom: 0 }}
+            onPress={onChangeImageHandler}
+          >
+            <Ionicons name="md-camera-reverse" size={24} color="black" />
+          </ChangeImageButton>
+        </ProfileImageContainer>
+        {/* 닉네임 */}
+        <KeyboardAvoidingView behavior={'padding'} styled={{ flex: 1 }}>
+          <NickNameInputContainer onPress={Keyboard.dismiss}>
+            <NickNameInput
+              onChangeText={setNickName}
+              value={nickName}
+            ></NickNameInput>
+          </NickNameInputContainer>
+          <EmailId>{emailId}</EmailId>
+          {/* 나의 소개 */}
+          <Introduce>
+            <IntroduceLabel>나의 메세지</IntroduceLabel>
+            <IntroduceInput
+              placeholder="내용을 입력해주세요."
+              multiline={true}
+              onChangeText={setMessage}
+              value={message}
+              style={{ textAlignVertical: 'top' }}
+            ></IntroduceInput>
+          </Introduce>
+          <ButtonWrap>
+            <SaveButton>
+              <SaveButtonText onPress={onSaveProfileHandler}>
+                저장
+              </SaveButtonText>
+            </SaveButton>
+            <CancelButton onPress={onCancleButtonHandler}>
+              <CancelButtonText>나가기</CancelButtonText>
+            </CancelButton>
+          </ButtonWrap>
+        </KeyboardAvoidingView>
+      </StyleWrap>
+    </StyleContainer>
   )
 }
 export default ProfileEdit
 
+const StyleContainer = styled.View`
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`
+
+// const StyleWrap = styled.View`
 const StyleWrap = styled.ScrollView`
-  flex-direction: column;
   background-color: #f6f2e5;
+  /* margin: auto; */
+  height: 100%;
+  width: 100%;
 `
 const ProfileImageContainer = styled.View`
   width: 150px;
   height: 150px;
-  /* background-color: red; */
-  position: relative;
-  margin-top: 30px;
+  margin: 0 auto;
+  margin-top: 50px;
 `
 const ProfileImage = styled.Image`
   width: 150px;
@@ -175,29 +215,39 @@ const NickNameInputContainer = styled.View`
   height: 50px;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 `
 const EmailId = styled.Text`
   font-size: 16px;
   font-weight: 300;
   margin-top: 10px;
+  margin: 0 auto;
 `
 
 const NickNameInput = styled.TextInput`
   font-size: 20px;
   margin-top: 10px;
 `
-const IntroduceLabel = styled.Text`
+const Introduce = styled.View`
+  width: 70%;
+  height: 30%;
+  margin: 0 auto;
   margin-top: 20px;
+  margin-bottom: 40px;
+`
+
+const IntroduceLabel = styled.Text`
   font-size: 20px;
   font-weight: 500;
   text-align: left;
-  width: 70%;
+  /* width: 70%;
+  height: 30%; */
 `
 const IntroduceInput = styled.TextInput`
   margin-top: 10px;
   padding: 10px;
-  width: 70%;
-  height: 30%;
+  width: 100%;
+  height: 150px;
   background-color: white;
   border-radius: 10px;
   border: 1px solid #dddddd;
@@ -205,10 +255,11 @@ const IntroduceInput = styled.TextInput`
 `
 const ButtonWrap = styled.View`
   width: 100%;
+  height: 50%;
+  /* background-color: white; */
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   flex-direction: row;
-  margin-top: 20px;
 `
 const SaveButton = styled.TouchableOpacity`
   width: 30%;
@@ -218,6 +269,7 @@ const SaveButton = styled.TouchableOpacity`
   border-radius: 5px;
   justify-content: center;
   align-items: center;
+
   margin-right: 10px;
 `
 const SaveButtonText = styled.Text`
