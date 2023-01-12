@@ -117,15 +117,11 @@ const Mypage = () => {
         </MyProfile>
         <MyReadedAndMarked>
           <ReadedIcon>
-            <Ionicons name="checkmark-circle-outline" size={20} color="#000" />
+            <Ionicons name="checkmark-circle-outline" size={18} />
           </ReadedIcon>
           <ReadedCount onChangeText={setReadCount}>{readCount}</ReadedCount>
           <MarkedIcon>
-            <MaterialCommunityIcons
-              name="heart-circle-outline"
-              size={20}
-              color="#000"
-            />
+            <MaterialCommunityIcons name="heart-circle-outline" size={18} />
           </MarkedIcon>
           <MarkedCount onChangeText={setBookMarkCount}>
             {bookMarkCount}
@@ -216,7 +212,7 @@ const ReadedIcon = styled.Text`
   font-size: 20px;
   margin-right: 20px;
   border-radius: 10px;
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.IconColor};
 `
 
 const ReadedCount = styled.Text`
@@ -229,7 +225,7 @@ const MarkedIcon = styled.Text`
   font-size: 20px;
   margin-right: 20px;
   border-radius: 10px;
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.IconColor};
 `
 
 const MarkedCount = styled.Text`

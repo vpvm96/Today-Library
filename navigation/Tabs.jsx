@@ -92,6 +92,4 @@ const LogoutTextBox = styled.TouchableOpacity`
   margin-top: 15px;
 `
 
-const LogoutText = styled.Text`
-  color: ${(props) => props.theme.textColor};
-`
+const LogoutText = styled.Text``

@@ -14,4 +14,5 @@ export const darkTheme = {
   backgroundColor: '#21232A',
   backgroundBlackColor: '#1B1B1D',
   backgroundInputColor: '#3f3e44',
+  IconColor: '#ffffff',
 }

@@ -16,6 +16,7 @@ import BookReviewModal from '../components/BookDetail/BookReviewModal'
 import useCalculRating from '../hooks/useCalculRating'
 import useInput from '../hooks/useInput'
 import styled from '@emotion/native'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const BookDetail = ({ route: { params: book } }) => {
   const auth = getAuth()
@@ -99,7 +100,13 @@ const BookDetail = ({ route: { params: book } }) => {
         <BookDetailBodyRatingContainer>
           <BookDetailRatingBox>
             <BookDetailRatingText>총 평가</BookDetailRatingText>
-            <Rating startingValue={avgRating} imageSize={25} readonly />
+            <Rating
+              type="custom"
+              startingValue={avgRating}
+              imageSize={25}
+              readonly
+              tintColor="white"
+            />
           </BookDetailRatingBox>
           <BookDetailReadButtonBox onPress={completedReadBookHandler}>
             <MaterialCommunityIcons name="book" size={24} color="#36A992" />

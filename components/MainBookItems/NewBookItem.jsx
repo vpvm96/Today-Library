@@ -37,11 +37,7 @@ const NewBookItem = ({ book }) => {
             </StyleIcon>
             <StyleNewBookText>{read}</StyleNewBookText>
             <StyleIcon>
-              <MaterialCommunityIcons
-                name="heart-circle-outline"
-                size={18}
-                color="white"
-              />
+              <MaterialCommunityIcons name="heart-circle-outline" size={18} />
             </StyleIcon>
             <StyleNewBookText>{bookmark}</StyleNewBookText>
           </StyleNewBookIconWrap>
