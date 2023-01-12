@@ -8,11 +8,13 @@ import { useNavigation } from '@react-navigation/core'
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged } from '@firebase/auth'
 import { authService } from '../api/firebase'
+import { useColorScheme } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
 const Tabs = ({ navigation }) => {
   const [logoutText, setLogoutText] = useState(true)
+  const scheme = useColorScheme()
   const navigate = useNavigation()
 
   useEffect(() => {
