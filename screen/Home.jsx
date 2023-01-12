@@ -22,6 +22,19 @@ const Home = () => {
 
   // const queryClinet = useQueryClient()
 
+  const onSubmitHandler = async () => {
+    if (text === '') {
+      setSerachBooks('')
+      return
+    }
+    const res = await searchBookRequest(text)
+    setSerachBooks(res)
+  }
+
+  useEffect(() => {
+    onSubmitHandler()
+  }, [text])
+
   // useQeury
   const {
     data: bookRequestData,
@@ -62,18 +75,6 @@ const Home = () => {
   }
 
   // title키워드 검색 시 title에 맞는 db 정보가 불러와 줘야함
-  const onSubmitHandler = async () => {
-    if (text === '') {
-      setSerachBooks('')
-      return
-    }
-    const res = await searchBookRequest(text)
-    setSerachBooks(res)
-  }
-
-  useEffect(() => {
-    onSubmitHandler()
-  }, [text])
 
   return (
     <>
@@ -81,7 +82,6 @@ const Home = () => {
       <StyleTextWrap>
         <StyleTextInput
           placeholder="도서명을 입력해주세요."
-          onSubmitEditing={onSubmitHandler}
           onChangeText={onChangeText}
           value={text}
         />
