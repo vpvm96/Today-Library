@@ -84,9 +84,10 @@ const Home = () => {
           placeholder="도서명을 입력해주세요."
           onChangeText={onChangeText}
           value={text}
+          placeholderTextColor="#b4b6ad"
         />
         <StyleIconWrap onPress={onSubmitHandler}>
-          <Feather name="search" size={24} color="black" />
+          <Feather name="search" size={24} color="#b4b6ad" />
         </StyleIconWrap>
       </StyleTextWrap>
 
@@ -174,7 +175,6 @@ const StyleIconWrap = styled.TouchableOpacity`
 const StyleCategoryWrap = styled.View`
   display: flex;
   flex-direction: row;
-
   width: 100%;
 `
 
