@@ -6,8 +6,12 @@ export const lightTheme = {
   textColor: BLACK_COLOR,
   modalBg: '#d2dae2',
   cancleBtn: '#AFB4B7',
+  backgroundColor: '#ffffff',
 }
 
 export const darkTheme = {
   textColor: WHITE_COLOR,
+  backgroundColor: '#21232A',
+  backgroundBlackColor: '#1B1B1D',
+  backgroundInputColor: '#484747',
 }

@@ -55,11 +55,13 @@ const DetailHeadContentBox = styled.View`
 const DetailHeadTitleText = styled.Text`
   font-size: 25px;
   font-weight: bold;
+  color: ${(props) => props.theme.textColor};
 `
 const DetailHeadDescText = styled.Text`
   width: 60%;
   margin-top: 10px;
   font-size: 18px;
+  color: ${(props) => props.theme.textColor};
 `
 
 export default MovieDetailHeader

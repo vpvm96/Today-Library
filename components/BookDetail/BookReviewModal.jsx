@@ -120,7 +120,7 @@ const ModalSaveButton = styled.TouchableOpacity`
   height: 40px;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.pointColor};
+  background-color: #36a992;
   border-radius: 5px;
 `
 const ModalSaveButtonText = styled.Text`
@@ -132,7 +132,7 @@ const ModalCancelButton = styled.TouchableOpacity`
   height: 40px;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.cancleBtn};
+  background-color: #36a992;
   border-radius: 5px;
   margin-left: 50px;
 `

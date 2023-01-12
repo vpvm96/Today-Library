@@ -32,10 +32,12 @@ const DetailCommentBox = styled.View`
 `
 const DetailCommentNickName = styled.Text`
   font-size: 20px;
+  color: ${(props) => props.theme.textColor};
 `
 const DetailCommentContent = styled.Text`
   font-size: 18px;
   margin-left: 13px;
+  color: ${(props) => props.theme.textColor};
 `
 
 export default BookDetailComment

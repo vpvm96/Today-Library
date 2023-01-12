@@ -206,7 +206,7 @@ const LoginBtn = styled.TouchableOpacity`
   justify-content: center;
 `
 const LogginBtnText = styled.Text`
-  color: white;
+  color: ${(props) => props.theme.textColor};
   font-size: 16px;
   font-weight: 500;
 `

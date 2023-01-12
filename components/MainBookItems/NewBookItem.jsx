@@ -32,13 +32,17 @@ const NewBookItem = ({ book }) => {
             <StyleNewBookText>{createdAt}</StyleNewBookText>
           </StyleNewBookEtcWrap>
           <StyleNewBookIconWrap>
-            <Ionicons name="checkmark-circle-outline" size={18} color="#000" />
+            <StyleIcon>
+              <Ionicons name="checkmark-circle-outline" size={18} />
+            </StyleIcon>
             <StyleNewBookText>{read}</StyleNewBookText>
-            <MaterialCommunityIcons
-              name="heart-circle-outline"
-              size={18}
-              color="#000"
-            />
+            <StyleIcon>
+              <MaterialCommunityIcons
+                name="heart-circle-outline"
+                size={18}
+                color="white"
+              />
+            </StyleIcon>
             <StyleNewBookText>{bookmark}</StyleNewBookText>
           </StyleNewBookIconWrap>
         </StyleNewBookInfo>
@@ -49,7 +53,7 @@ const NewBookItem = ({ book }) => {
 
 const StyleNewBookItem = styled.TouchableOpacity`
   width: 100%;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.backgroundColor};
   padding: 10px;
   justify-content: center;
 `
@@ -83,11 +87,16 @@ const StyleNewBookTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 
 const StyleNewBookText = styled.Text`
   font-size: 15px;
   margin-right: 8px;
+  color: ${(props) => props.theme.textColor};
+`
+const StyleIcon = styled.Text`
+  color: ${(props) => props.theme.textColor};
 `
 
 const StyleNewBookEtcWrap = styled.View`

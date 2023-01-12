@@ -103,7 +103,7 @@ const Mypage = () => {
   }, [IsFocused])
 
   return (
-    <ScrollView>
+    <ScrollViewBody>
       {/* 프로필 영역 */}
       <MyInfo>
         <MyProfile>
@@ -167,17 +167,22 @@ const Mypage = () => {
           </ReadBookCardWrap>
         )}
       </MyRecords>
-    </ScrollView>
+    </ScrollViewBody>
   )
 }
 
 export default Mypage
 
 // 프로필 영역
+const ScrollViewBody = styled.ScrollView`
+  background-color: ${(props) => props.theme.backgroundColor};
+`
+
 const MyInfo = styled.View`
   width: 100%;
   height: 200px;
   justify-content: center;
+  background-color: ${(props) => props.theme.backgroundColor};
 `
 
 const MyProfile = styled.View`
@@ -197,6 +202,7 @@ const MyNickName = styled.TextInput`
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const MyReadedAndMarked = styled.View`
   margin-top: 40px;
@@ -205,49 +211,56 @@ const MyReadedAndMarked = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  /* background-color: grey; */
 `
 const ReadedIcon = styled.Text`
   font-size: 20px;
   margin-right: 20px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.textColor};
 `
 
 const ReadedCount = styled.Text`
   font-size: 20px;
   margin-right: 35px;
+  color: ${(props) => props.theme.textColor};
 `
 
 const MarkedIcon = styled.Text`
   font-size: 20px;
   margin-right: 20px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.textColor};
 `
 
 const MarkedCount = styled.Text`
   font-size: 20px;
   color: black;
-  /* background-color: yellow; */
+  color: ${(props) => props.theme.textColor};
 `
 
 const MyIntroduce = styled.Text`
   font-size: 20px;
   text-align: center;
   margin-top: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 
 // 읽음 & 찜 책 리스트
 const MyRecords = styled.View`
   height: 100%;
+  background-color: ${(props) => props.theme.backgroundColor};
 `
 const RecordsTitle = styled.Text`
   font-size: 22px;
   font-weight: 600;
   padding: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const SectionLine = styled.View`
   width: 100%;
   height: 1px;
-  background-color: black;
-  margin-top: 10px;
+  background-color: ${(props) => props.theme.textColor};
+  // margin-top: 10px;
 `
 
 const RecordsCategory = styled.View`

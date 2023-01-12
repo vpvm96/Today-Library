@@ -77,56 +77,64 @@ const ProfileEdit = () => {
   }
 
   return (
-    <StyleWrap>
-      {/* 프로필 이미지 */}
-      <ProfileImageContainer>
-        {!profileImgUrl ? (
-          <ProfileImage
-            source={{
-              uri: `${profileImg}`,
-            }}
-            onChangePhoto={setProfileImg}
-          ></ProfileImage>
-        ) : (
-          <ProfileImage
-            source={profileImgUrl}
-            onChangePhoto={setProfileImg}
-          ></ProfileImage>
-        )}
-        <ChangeImageButton
-          style={{ position: 'absolute', right: 0, bottom: 0 }}
-          onPress={onChangeImageHandler}
-        >
-          <Ionicons name="md-camera-reverse" size={24} color="black" />
-        </ChangeImageButton>
-      </ProfileImageContainer>
-      {/* 닉네임 */}
-      <NickNameInputContainer>
-        <NickNameInput
-          onChangeText={setNickName}
-          value={nickName}
-        ></NickNameInput>
-      </NickNameInputContainer>
-      {/* 나의 소개 */}
-      <IntroduceLabel>나의 메세지</IntroduceLabel>
-      <IntroduceInput
-        placeholder="내용을 입력해주세요."
-        multiline={true}
-        onChangeText={setMessage}
-        value={message}
-      ></IntroduceInput>
-      <ButtonWrap>
-        <SaveButton>
-          <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
-        </SaveButton>
-        <CancelButton>
-          <CancelButtonText>취소</CancelButtonText>
-        </CancelButton>
-      </ButtonWrap>
-    </StyleWrap>
+    <ProfileEditBody>
+      <StyleWrap>
+        {/* 프로필 이미지 */}
+        <ProfileImageContainer>
+          {!profileImgUrl ? (
+            <ProfileImage
+              source={{
+                uri: `${profileImg}`,
+              }}
+              onChangePhoto={setProfileImg}
+            ></ProfileImage>
+          ) : (
+            <ProfileImage
+              source={profileImgUrl}
+              onChangePhoto={setProfileImg}
+            ></ProfileImage>
+          )}
+          <ChangeImageButton
+            style={{ position: 'absolute', right: 0, bottom: 0 }}
+            onPress={onChangeImageHandler}
+          >
+            <Ionicons name="md-camera-reverse" size={24} color="black" />
+          </ChangeImageButton>
+        </ProfileImageContainer>
+        {/* 닉네임 */}
+        <NickNameInputContainer>
+          <NickNameInput
+            onChangeText={setNickName}
+            value={nickName}
+          ></NickNameInput>
+        </NickNameInputContainer>
+        {/* 나의 소개 */}
+        <IntroduceLabel>나의 메세지</IntroduceLabel>
+        <IntroduceInput
+          placeholder="내용을 입력해주세요."
+          multiline={true}
+          onChangeText={setMessage}
+          value={message}
+        ></IntroduceInput>
+        <ButtonWrap>
+          <SaveButton>
+            <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
+          </SaveButton>
+          <CancelButton>
+            <CancelButtonText>취소</CancelButtonText>
+          </CancelButton>
+        </ButtonWrap>
+      </StyleWrap>
+    </ProfileEditBody>
   )
 }
 export default ProfileEdit
+
+const ProfileEditBody = styled.View`
+  width: 100%;
+  height: 100%;
+  background-color: ${(props) => props.theme.backgroundColor};
+`
 
 const StyleWrap = styled.View`
   flex-direction: column;
@@ -137,7 +145,6 @@ const StyleWrap = styled.View`
 const ProfileImageContainer = styled.View`
   width: 150px;
   height: 150px;
-  /* background-color: red; */
   position: relative;
   margin-top: 30px;
 `
@@ -167,6 +174,7 @@ const NickNameInputContainer = styled.View`
 const NickNameInput = styled.TextInput`
   font-size: 20px;
   margin-top: 10px;
+  color: ${(props) => props.theme.textColor};
 `
 const IntroduceLabel = styled.Text`
   margin-top: 20px;
@@ -174,6 +182,7 @@ const IntroduceLabel = styled.Text`
   font-weight: 600;
   text-align: left;
   width: 70%;
+  color: ${(props) => props.theme.textColor};
 `
 const IntroduceInput = styled.TextInput`
   margin-top: 10px;
