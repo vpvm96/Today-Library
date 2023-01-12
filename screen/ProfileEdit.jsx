@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Alert, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { fireStore, firestorage } from '../api/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import {
@@ -38,7 +39,7 @@ const ProfileEdit = () => {
       aspect: [1, 1],
       quality: 1,
     })
-    setProfileImgUrl(result.assets[0])
+    if (result) setProfileImgUrl(result.assets[0])
   }
 
   // 프로필 변경 내용 FB 저장
@@ -54,6 +55,7 @@ const ProfileEdit = () => {
       mymessage: message,
       profileImg: downLoadImage,
     })
+    alert('저장 완료')
   }
 
   // 기존 프로필 정보 가져오기
@@ -71,13 +73,17 @@ const ProfileEdit = () => {
           profileImg: doc.data().profileImg,
           emailId: doc.data().email,
         })
-        console.log('userInfo', userInfo)
         setNickName(userInfo[0].nickname)
         setMessage(userInfo[0].mymessage)
         setProfileImg(userInfo[0].profileImg)
         setEmailId(userInfo[0].emailId)
       })
     })
+  }
+
+  // 나가기 버튼 클릭시 alert 경고
+  const onCancleButtonHandler = () => {
+    console.log('취소버튼 클릭')
   }
 
   return (
@@ -105,40 +111,39 @@ const ProfileEdit = () => {
         </ChangeImageButton>
       </ProfileImageContainer>
       {/* 닉네임 */}
-      <NickNameInputContainer>
-        <NickNameInput
-          onChangeText={setNickName}
-          value={nickName}
-        ></NickNameInput>
-      </NickNameInputContainer>
-      <EmailId>{emailId}</EmailId>
-      {/* 나의 소개 */}
-      <IntroduceLabel>나의 메세지</IntroduceLabel>
-      <IntroduceInput
-        placeholder="내용을 입력해주세요."
-        multiline={true}
-        onChangeText={setMessage}
-        value={message}
-      ></IntroduceInput>
-      <ButtonWrap>
-        <SaveButton>
-          <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
-        </SaveButton>
-        <CancelButton>
-          <CancelButtonText>나가기</CancelButtonText>
-        </CancelButton>
-      </ButtonWrap>
+      <KeyboardAvoidingView behavior={'padding'}>
+        <NickNameInputContainer onPress={Keyboard.dismiss}>
+          <NickNameInput
+            onChangeText={setNickName}
+            value={nickName}
+          ></NickNameInput>
+        </NickNameInputContainer>
+        <EmailId>{emailId}</EmailId>
+        {/* 나의 소개 */}
+        <IntroduceLabel>나의 메세지</IntroduceLabel>
+        <IntroduceInput
+          placeholder="내용을 입력해주세요."
+          multiline={true}
+          onChangeText={setMessage}
+          value={message}
+          style={{ textAlignVertical: 'top' }}
+        ></IntroduceInput>
+        <ButtonWrap>
+          <SaveButton>
+            <SaveButtonText onPress={onSaveProfileHandler}>저장</SaveButtonText>
+          </SaveButton>
+          <CancelButton onPrees={() => onCancleButtonHandler}>
+            <CancelButtonText>나가기</CancelButtonText>
+          </CancelButton>
+        </ButtonWrap>
+      </KeyboardAvoidingView>
     </StyleWrap>
   )
 }
 export default ProfileEdit
 
-const StyleWrap = styled.View`
+const StyleWrap = styled.ScrollView`
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
   background-color: #f6f2e5;
 `
 const ProfileImageContainer = styled.View`
