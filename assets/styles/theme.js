@@ -13,5 +13,5 @@ export const darkTheme = {
   textColor: WHITE_COLOR,
   backgroundColor: '#21232A',
   backgroundBlackColor: '#1B1B1D',
-  backgroundInputColor: '#484747',
+  backgroundInputColor: '#3f3e44',
 }
