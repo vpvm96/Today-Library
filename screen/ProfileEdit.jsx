@@ -251,7 +251,9 @@ const IntroduceInput = styled.TextInput`
   padding: 10px;
   width: 100%;
   height: 150px;
-  background-color: white;
+  background-color: ${(props) => props.theme.backgroundModalInputColor};
+  color: ${(props) => props.theme.textColor};
+  border-color: ${(props) => props.theme.borderColorModal};
   border-radius: 10px;
   border: 1px solid #dddddd;
   font-size: 18px;
@@ -268,7 +270,7 @@ const SaveButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
   /* background-color: #61d2bc; */
-  background-color: #3f78db;
+  background-color: #61d2bc;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -283,7 +285,7 @@ const CancelButton = styled.TouchableOpacity`
   width: 30%;
   height: 35px;
   /* background-color: #61d2bc; */
-  background-color: #3f78db;
+  background-color: #61d2bc;
   border-radius: 5px;
   justify-content: center;
   align-items: center;

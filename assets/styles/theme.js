@@ -7,12 +7,18 @@ export const lightTheme = {
   modalBg: '#d2dae2',
   cancleBtn: '#AFB4B7',
   backgroundColor: '#ffffff',
+  backgroundModalInputColor: 'white',
+  borderColorModal: 'gray',
 }
 
 export const darkTheme = {
   textColor: WHITE_COLOR,
+  pointColor: GREEN_COLOR,
+  borderColor: '#3f3e44',
   backgroundColor: '#21232A',
   backgroundBlackColor: '#1B1B1D',
   backgroundInputColor: '#3f3e44',
-  IconColor: '#ffffff',
+  IconColor: '#21232A',
+  backgroundModalInputColor: '#353b48',
+  borderColorModal: '#c0c0c0',
 }

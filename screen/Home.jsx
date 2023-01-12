@@ -158,6 +158,8 @@ const StyleTextWrap = styled.View`
 
 const StyleTextInput = styled.TextInput`
   background-color: ${(props) => props.theme.backgroundColor};
+  border-bottom-width: 1px;
+  border-bottom-color: ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.textColor};
   width: 100%;
   height: 60px;
