@@ -18,19 +18,19 @@ import {
 import { getAuth } from 'firebase/auth'
 
 const ProfileEdit = () => {
+  const auth = getAuth()
+  const currentUser = auth.currentUser
+
   const [nickName, setNickName] = useState('기본 닉네임')
+
   // 프로필 이미지 state
   const [profileImg, setProfileImg] = useState(
-    // '../assets/images/profileImg.png'
-    require('../assets/images/profileImg.png')
+    'https://firebasestorage.googleapis.com/v0/b/today-library.appspot.com/o/images%2FprofileImg.png?alt=media&token=8e0b5187-d297-4fa0-b5b2-de80c55f96f4'
   )
   // 프로필 이미지 url state
   const [profileImgUrl, setProfileImgUrl] = useState('')
+  // 소개 멘트 state
   const [message, setMessage] = useState('')
-  const [saveId, setSaveId] = useState('')
-
-  const auth = getAuth()
-  const currentUser = auth.currentUser
 
   // 디바이스에서 이미지 선택 기능
   const onChangeImageHandler = async () => {
@@ -45,10 +45,10 @@ const ProfileEdit = () => {
 
     if (result.assets !== null) {
       setProfileImg(result.assets)
-      // setProfileImgUrl(result.assets)
-      // uploadImage(profileImg)
     } else {
-      setProfileImg(require('../assets/images/profileImg.png'))
+      setProfileImg(
+        'https://firebasestorage.googleapis.com/v0/b/today-library.appspot.com/o/images%2FprofileImg.png?alt=media&token=8e0b5187-d297-4fa0-b5b2-de80c55f96f4'
+      )
     }
   }
 
@@ -61,65 +61,50 @@ const ProfileEdit = () => {
     getDocs(q).then((querySnapshop) => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
-        // {
-        //   console.log('doc', doc.data())
-        // }
+        {
+          console.log('62 doc.data()', doc.data())
+        }
         userInfo.push({
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
-          // profileImg: doc.data().profileImg[0].uri,
+          profileImg: doc.data().profileImg,
         })
         setNickName(userInfo[0].nickname)
-        setSaveId(userInfo[0].id)
         setMessage(userInfo[0].mymessage)
-        // console.log(userInfo[0].profileImg)
-        // setProfileImgUrl(profileImg)
+        setProfileImg(userInfo[0].profileImg)
       })
     })
   }
 
-  // 프로필 이미지 스토리지 업로드 - 작업 중
-  const uploadImage = async (uri) => {
-    console.log('uri', uri)
-    const imgUrl = uri[0].uri
+  // 프로필 변경 내용 FB 저장
+  const onSaveProfileHandler = async (id) => {
+    const imgUrl = profileImg[0].uri
 
     try {
       const response = await fetch(imgUrl)
       const blobFile = await response.blob()
-      // console.log('response', response)
-      console.log('blobFile', blobFile)
-
-      // const reference = ref(firestorage, currentUser.uid)
+      // FB 스토리지에 이미지 저장 후 url 다운
       const reference = ref(firestorage, `images/${currentUser.uid}`)
       const result = await uploadBytes(reference, blobFile)
-      const url = await getDownloadURL(result.ref)
-      console.log('url', url)
-      setProfileImgUrl(url)
-      // setProfileImg(url)
-      return url
-    } catch (err) {
-      // return Promise.reject(err)
-      console.log(err)
-    }
-  }
+      const firebaseImgUrl = await getDownloadURL(result.ref)
 
-  // 프로필 변경 내용 FB 저장
-  const onSaveProfileHandler = async (id) => {
-    // const url = uploadImage(profileImgUrl)
-    try {
+      // 다운받은 url을 FB 데이터베이스에 업데이트
       await updateDoc(doc(fireStore, 'users', id), {
         nickname: nickName,
         mymessage: message,
-        profileImg: profileImgUrl,
+        profileImg: firebaseImgUrl,
       })
     } catch (err) {
-      console.log(err)
-    } finally {
-      console.log('수정 완료', profileImg)
+      // return Promise.reject(err)
+      console.log('133', err)
     }
-    setNickName(nickName)
-    uploadImage(profileImg)
   }
+
+  useEffect(() => {
+    if (profileImgUrl === undefined) {
+      return
+    }
+  }, [profileImgUrl])
 
   useEffect(() => {
     getProfileRequest()
@@ -130,8 +115,9 @@ const ProfileEdit = () => {
       {/* 프로필 이미지 */}
       <ProfileImageContainer>
         <ProfileImage
-          // url={profileImg}
-          source={profileImg}
+          source={{
+            uri: `${profileImg}`,
+          }}
           onChangePhoto={setProfileImg}
         ></ProfileImage>
         <ChangeImageButton
