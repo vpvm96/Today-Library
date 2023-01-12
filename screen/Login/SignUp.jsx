@@ -107,7 +107,7 @@ export default function SignUp() {
   const MoveLoginHandle = () => linkTo('/LoginPage/Login')
   return (
     <SignUpPageBody>
-      <SignUpImage source={require('../../assets/images/loginLogo.png')} />
+      <SignUpImage source={require('../../assets/images/subLogo.png')} />
       <SignUpTextInput
         placeholder="UserEmail"
         value={email}
@@ -166,8 +166,10 @@ const SignUpPageBody = styled.View`
   align-items: center;
 `
 const SignUpImage = styled.Image`
+  width: 120px;
+  height: 120px;
   margin-top: 20%;
-  margin-bottom: 10%;
+  margin-bottom: 5%;
 `
 const SignUpTextInput = styled.TextInput`
   width: 70%;
