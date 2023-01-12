@@ -61,9 +61,6 @@ const ProfileEdit = () => {
     getDocs(q).then((querySnapshop) => {
       const userInfo = []
       querySnapshop.forEach((doc) => {
-        {
-          console.log('62 doc.data()', doc.data())
-        }
         userInfo.push({
           nickname: doc.data().nickname,
           mymessage: doc.data().mymessage,
