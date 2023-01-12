@@ -70,6 +70,7 @@ const Mypage = () => {
           readCount: doc.data().readBook.length,
         })
         setNickName(userInfo[0].nickname)
+        console.log('userInfo[0].mymessage', userInfo[0].mymessage)
         setMessage(userInfo[0].mymessage)
         setProfileImg(userInfo[0].profileImg)
         setBookMarkCount(userInfo[0].bookMarkCount)
@@ -125,7 +126,7 @@ const Mypage = () => {
           <ReadedIcon>
             <Ionicons name="checkmark-circle-outline" size={20} color="#000" />
           </ReadedIcon>
-          <ReadedCount>{readCount}</ReadedCount>
+          <ReadedCount onChangeText={setReadCount}>{readCount}</ReadedCount>
           <MarkedIcon>
             <MaterialCommunityIcons
               name="heart-circle-outline"
@@ -133,14 +134,11 @@ const Mypage = () => {
               color="#000"
             />
           </MarkedIcon>
-          <MarkedCount
-            // editable={false}
-            onChangeText={setBookMarkCount}
-          >
+          <MarkedCount onChangeText={setBookMarkCount}>
             {bookMarkCount}
           </MarkedCount>
         </MyReadedAndMarked>
-        <MyIntroduce>나를 소개하는 내용이 없습니다.</MyIntroduce>
+        <MyIntroduce onChangeText={setMessage}>{message}</MyIntroduce>
       </MyInfo>
       {/* 읽음 & 찜 책 리스트 */}
       <MyRecords>
