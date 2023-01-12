@@ -102,7 +102,7 @@ export default function Login() {
 
   return (
     <LoginPageBody>
-      <LogoImage source={require('../../assets/images/loginLogo.png')} />
+      <LogoImage source={require('../../assets/images/subLogo.png')} />
       <LoginTextInput
         placeholder="UserEmail"
         value={email}
@@ -153,8 +153,10 @@ const LoginPageBody = styled.View`
   align-items: center;
 `
 const LogoImage = styled.Image`
-  margin-top: 25%;
-  margin-bottom: 10%;
+  width: 120px;
+  height: 120px;
+  margin-top: 30%;
+  margin-bottom: 5%;
 `
 const LoginTextInput = styled.TextInput`
   width: 70%;
